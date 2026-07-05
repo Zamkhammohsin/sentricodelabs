@@ -396,19 +396,48 @@
       var submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
 
-      fetch(action, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
-      })
-      .then(function () {
-        showConfirmation();
-      })
-      .catch(function () {
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
-        showFormMessage('Network error. Please check your connection and try again.', 'error');
+      /* Create hidden inputs for all form data */
+      var hiddenData = [
+        ['name', name],
+        ['email', email],
+        ['phone', phone],
+        ['projectType', projectLabel],
+        ['timeline', timelineLabel],
+        ['contactMethod', contactType === 'email' ? 'Email' : 'Phone']
+      ];
+      var inputs = [];
+      hiddenData.forEach(function (pair) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = pair[0];
+        inp.value = pair[1];
+        form.appendChild(inp);
+        inputs.push(inp);
       });
+
+      /* Hidden iframe to capture response (no CORS issues) */
+      var frameId = 'submit-frame-' + Date.now();
+      var frame = document.createElement('iframe');
+      frame.name = frameId;
+      frame.style.display = 'none';
+      document.body.appendChild(frame);
+
+      var tid = setTimeout(function () {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
+        showFormMessage('Submission timed out. Please try again.', 'error');
+      }, 20000);
+
+      frame.addEventListener('load', function () {
+        clearTimeout(tid);
+        inputs.forEach(function (inp) { inp.remove(); });
+        frame.remove();
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
+        showConfirmation();
+      });
+
+      form.target = frameId;
+      form.submit();
+      form.target = '';
     });
 
     showStep(0);
