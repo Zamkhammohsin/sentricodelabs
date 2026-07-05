@@ -22,8 +22,8 @@
     var sb = getSB();
     if (!sb) { console.error('Supabase not loaded'); return; }
     var users = [
-      { email: 'zam@sentricodelabs.com', password: 'z@1k' },
-      { email: 'saiqa@sentricodelabs.com', password: 's@2k' }
+      { email: 'zam@sentricodelabs.com', password: 'z@1k@2026' },
+      { email: 'saiqa@sentricodelabs.com', password: 's@2k@2026' }
     ];
     users.forEach(function (u) {
       sb.auth.signUp({ email: u.email, password: u.password })
