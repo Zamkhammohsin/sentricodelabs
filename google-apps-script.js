@@ -119,7 +119,12 @@ function isRateLimited(ss, username) {
 
 function doPost(e) {
   try {
-    var data = JSON.parse(e.postData.contents);
+    var data = {};
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (jsonErr) {
+      data = e.parameter || {};
+    }
     var t = data.t || data.action;
 
     if (t === 'l') return handleLogin(data);

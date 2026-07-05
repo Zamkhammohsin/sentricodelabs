@@ -396,34 +396,41 @@
       var submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
 
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', action, true);
-      xhr.setRequestHeader('Content-Type', 'text/plain');
+      var frame = document.createElement('iframe');
+      frame.name = 'submit-frame-' + Date.now();
+      frame.style.display = 'none';
+      document.body.appendChild(frame);
 
-      xhr.onload = function () {
+      var fields = [
+        { n: 'name', v: name },
+        { n: 'email', v: email },
+        { n: 'phone', v: phone },
+        { n: 'projectType', v: projectLabel },
+        { n: 'timeline', v: timelineLabel },
+        { n: 'contactMethod', v: contactType === 'email' ? 'Email' : 'Phone' }
+      ];
+      fields.forEach(function (f) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = f.n;
+        inp.value = f.v;
+        form.appendChild(inp);
+      });
+
+      form.target = frame.name;
+      form.submit();
+      form.target = '';
+
+      var timeout = setTimeout(function () {
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
-        if (xhr.status >= 200 && xhr.status < 300) {
-          try {
-            var resp = JSON.parse(xhr.responseText);
-            if (resp.success) {
-              showConfirmation();
-            } else {
-              showFormMessage('Submission failed. Please try again or email us directly.', 'error');
-            }
-          } catch (e) {
-            showConfirmation();
-          }
-        } else {
-          showFormMessage('Submission failed (server error). Please try again later.', 'error');
-        }
-      };
+        showFormMessage('Submission timed out. Please try again.', 'error');
+      }, 15000);
 
-      xhr.onerror = function () {
+      frame.addEventListener('load', function () {
+        clearTimeout(timeout);
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
-        showFormMessage('Network error. Please check your connection and try again.', 'error');
-      };
-
-      xhr.send(JSON.stringify(payload));
+        showConfirmation();
+      });
     });
 
     showStep(0);
