@@ -590,6 +590,25 @@ p { color: var(--text-secondary); }
   transition: var(--transition);
 }
 .footer-links a:hover { color: var(--white); }
+.footer-careers {
+  max-width: 280px;
+}
+.footer-careers h4 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.footer-careers p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+.footer-careers a {
+  color: var(--accent-1);
+  text-decoration: underline;
+}
 .footer-social {
   display: flex;
   gap: 12px;
