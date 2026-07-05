@@ -398,8 +398,7 @@
 
       var xhr = new XMLHttpRequest();
       xhr.open('POST', action, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.setRequestHeader('Content-Type', 'text/plain');
 
       xhr.onload = function () {
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }

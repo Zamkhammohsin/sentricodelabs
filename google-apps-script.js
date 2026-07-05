@@ -89,6 +89,14 @@ function setupCoFounder() {
   ui.alert('Co-Founder account created. You can now sign in on the site.');
 }
 
+function setNotificationEmail() {
+  var ui = SpreadsheetApp.getUi();
+  var email = ui.prompt('Notification Email', 'Enter the email address to receive contact form notifications:', ui.ButtonSet.OK_CANCEL);
+  if (email.getSelectedButton() !== ui.Button.OK) return;
+  PropertiesService.getScriptProperties().setProperty('NOTIFICATION_EMAIL', email.getResponseText());
+  ui.alert('Notification email set to ' + email.getResponseText());
+}
+
 function sanitize(str) {
   return String(str).replace(/[^a-zA-Z0-9._@\-\s]/g, '');
 }
@@ -117,7 +125,9 @@ function doPost(e) {
     if (t === 'l') return handleLogin(data);
     if (t === 's') return handleSaveContent(data);
     if (t === 'g') return handleGetContent(data);
-    if (t === 'submit' || data.action === 'submit') return handleContactSubmit(data);
+    if (t === 'submit' || data.action === 'submit' || data.name !== undefined) {
+      return handleContactSubmit(data);
+    }
 
     return jsonResponse({ s: false });
   } catch (err) {
@@ -144,6 +154,25 @@ function handleContactSubmit(data) {
     data.timeline || '',
     data.contactMethod || ''
   ]);
+
+  var notifyEmail = PropertiesService.getScriptProperties().getProperty('NOTIFICATION_EMAIL');
+  if (notifyEmail) {
+    try {
+      MailApp.sendEmail({
+        to: notifyEmail,
+        subject: 'New Contact — ' + (data.name || 'Anonymous'),
+        htmlBody: '<strong>New contact form submission</strong><br><br>' +
+          '<b>Name:</b> ' + (data.name || '—') + '<br>' +
+          '<b>Email:</b> ' + (data.email || '—') + '<br>' +
+          '<b>Phone:</b> ' + (data.phone || '—') + '<br>' +
+          '<b>Project Type:</b> ' + (data.projectType || '—') + '<br>' +
+          '<b>Timeline:</b> ' + (data.timeline || '—') + '<br>' +
+          '<b>Contact Method:</b> ' + (data.contactMethod || '—')
+      });
+    } catch (e) {
+      console.error('Email notification failed: ' + e.message);
+    }
+  }
 
   return jsonResponse({ success: true });
 }
