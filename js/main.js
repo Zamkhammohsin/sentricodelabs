@@ -396,40 +396,18 @@
       var submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
 
-      var frame = document.createElement('iframe');
-      frame.name = 'submit-frame-' + Date.now();
-      frame.style.display = 'none';
-      document.body.appendChild(frame);
-
-      var fields = [
-        { n: 'name', v: name },
-        { n: 'email', v: email },
-        { n: 'phone', v: phone },
-        { n: 'projectType', v: projectLabel },
-        { n: 'timeline', v: timelineLabel },
-        { n: 'contactMethod', v: contactType === 'email' ? 'Email' : 'Phone' }
-      ];
-      fields.forEach(function (f) {
-        var inp = document.createElement('input');
-        inp.type = 'hidden';
-        inp.name = f.n;
-        inp.value = f.v;
-        form.appendChild(inp);
-      });
-
-      form.target = frame.name;
-      form.submit();
-      form.target = '';
-
-      var timeout = setTimeout(function () {
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
-        showFormMessage('Submission timed out. Please try again.', 'error');
-      }, 15000);
-
-      frame.addEventListener('load', function () {
-        clearTimeout(timeout);
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
+      fetch(action, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      })
+      .then(function () {
         showConfirmation();
+      })
+      .catch(function () {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
+        showFormMessage('Network error. Please check your connection and try again.', 'error');
       });
     });
 
