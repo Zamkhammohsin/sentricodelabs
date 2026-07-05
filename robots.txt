@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /
+
+# Sentricodelabs – All rights reserved.
+# Automated scraping, crawling, data extraction, or any unauthorized
+# reproduction of content from this site is strictly prohibited.
+# 
+# If you wish to request access to our content, contact:
+# info@sentricodelabs.com
+#
+# Unauthorized scraping will be subject to legal action.

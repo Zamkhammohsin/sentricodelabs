@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentricodelabs | Custom Software Solutions</title>
+  <meta name="description" content="We build scalable software for modern teams. Expert development, fast delivery. Custom web, mobile, and enterprise solutions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/sentricode%20logo.png">
+</head>
+<body>
+
+  <!-- Full-page dot backdrop -->
+  <div class="page-backdrop" aria-hidden="true">
+    <!-- Drip 1 cluster (Hero → About) ~30% -->
+    <div class="dot dot-lg" style="top:28%;left:8%;width:10px;height:10px;background:#D4C5A9;"></div>
+    <div class="dot" style="top:29%;left:75%;width:7px;height:7px;background:#D4A574;"></div>
+    <div class="dot dot-sm" style="top:30%;left:92%;width:4px;height:4px;background:#C4A882;"></div>
+    <div class="dot" style="top:31%;left:25%;width:5px;height:5px;background:#D4C5A9;"></div>
+    <div class="dot" style="top:31.5%;left:55%;width:6px;height:6px;background:#C4A882;"></div>
+    <!-- trailing down -->
+    <div class="dot dot-sm" style="top:33%;left:22%;width:3px;height:3px;background:#D4A574;"></div>
+    <div class="dot" style="top:35%;left:70%;width:5px;height:5px;background:#D4C5A9;"></div>
+    <div class="dot dot-sm" style="top:37%;left:40%;width:4px;height:4px;background:#C4A882;"></div>
+    <div class="dot dot-lg" style="top:39%;left:85%;width:9px;height:9px;background:#D4A574;"></div>
+    <div class="dot" style="top:41%;left:15%;width:6px;height:6px;background:#D4C5A9;"></div>
+
+    <!-- Drip 2 cluster (About → Services) ~47% -->
+    <div class="dot" style="top:45%;left:5%;width:6px;height:6px;background:#C4A882;"></div>
+    <div class="dot dot-lg" style="top:46%;left:45%;width:11px;height:11px;background:#D4A574;"></div>
+    <div class="dot" style="top:46.5%;left:88%;width:7px;height:7px;background:#D4C5A9;"></div>
+    <div class="dot dot-sm" style="top:47%;left:20%;width:3px;height:3px;background:#D4A574;"></div>
+    <div class="dot" style="top:47.5%;left:68%;width:8px;height:8px;background:#C4A882;"></div>
+    <!-- trailing down -->
+    <div class="dot" style="top:49%;left:12%;width:5px;height:5px;background:#D4C5A9;"></div>
+    <div class="dot dot-sm" style="top:51%;left:35%;width:3px;height:3px;background:#C4A882;"></div>
+    <div class="dot" style="top:52%;left:80%;width:6px;height:6px;background:#D4A574;"></div>
+    <div class="dot dot-lg" style="top:54%;left:55%;width:10px;height:10px;background:#D4C5A9;"></div>
+    <div class="dot dot-sm" style="top:56%;left:92%;width:4px;height:4px;background:#C4A882;"></div>
+
+    <!-- Drip 3 cluster (Services → Stats) ~64% -->
+    <div class="dot" style="top:62%;left:10%;width:7px;height:7px;background:#D4A574;"></div>
+    <div class="dot dot-sm" style="top:63%;left:60%;width:4px;height:4px;background:#D4C5A9;"></div>
+    <div class="dot dot-lg" style="top:63.5%;left:38%;width:12px;height:12px;background:#C4A882;"></div>
+    <div class="dot" style="top:64%;left:82%;width:6px;height:6px;background:#D4A574;"></div>
+    <div class="dot" style="top:65%;left:25%;width:5px;height:5px;background:#D4C5A9;"></div>
+    <!-- trailing down -->
+    <div class="dot" style="top:66%;left:72%;width:5px;height:5px;background:#C4A882;"></div>
+    <div class="dot dot-sm" style="top:68%;left:30%;width:3px;height:3px;background:#D4A574;"></div>
+    <div class="dot" style="top:69%;left:15%;width:8px;height:8px;background:#D4C5A9;"></div>
+    <div class="dot dot-lg" style="top:71%;left:50%;width:9px;height:9px;background:#C4A882;"></div>
+    <div class="dot dot-sm" style="top:73%;left:78%;width:4px;height:4px;background:#D4A574;"></div>
+
+    <!-- Drip 4 cluster (Stats → Contact) ~80% -->
+    <div class="dot dot-sm" style="top:78%;left:15%;width:4px;height:4px;background:#D4C5A9;"></div>
+    <div class="dot" style="top:79%;left:52%;width:7px;height:7px;background:#C4A882;"></div>
+    <div class="dot dot-lg" style="top:79.5%;left:72%;width:11px;height:11px;background:#D4A574;"></div>
+    <div class="dot" style="top:80%;left:35%;width:6px;height:6px;background:#D4C5A9;"></div>
+    <div class="dot" style="top:80.5%;left:88%;width:5px;height:5px;background:#C4A882;"></div>
+    <!-- trailing down -->
+    <div class="dot" style="top:82%;left:65%;width:6px;height:6px;background:#D4A574;"></div>
+    <div class="dot dot-sm" style="top:84%;left:28%;width:3px;height:3px;background:#D4C5A9;"></div>
+    <div class="dot dot-lg" style="top:85%;left:90%;width:10px;height:10px;background:#C4A882;"></div>
+    <div class="dot" style="top:87%;left:10%;width:5px;height:5px;background:#D4A574;"></div>
+    <div class="dot dot-sm" style="top:89%;left:45%;width:4px;height:4px;background:#D4C5A9;"></div>
+
+    <!-- Hero-area scattered dots (top) -->
+    <div class="dot" style="top:5%;left:12%;width:6px;height:6px;background:#D4A574;"></div>
+    <div class="dot dot-sm" style="top:8%;left:65%;width:4px;height:4px;background:#C4A882;"></div>
+    <div class="dot dot-lg" style="top:12%;left:40%;width:10px;height:10px;background:#D4C5A9;"></div>
+    <div class="dot" style="top:15%;left:82%;width:5px;height:5px;background:#D4A574;"></div>
+    <div class="dot dot-sm" style="top:18%;left:30%;width:3px;height:3px;background:#C4A882;"></div>
+    <div class="dot" style="top:22%;left:55%;width:7px;height:7px;background:#D4C5A9;"></div>
+
+    <!-- Footer-area scattered dots (bottom) -->
+    <div class="dot" style="top:92%;left:25%;width:6px;height:6px;background:#C4A882;"></div>
+    <div class="dot" style="top:94%;left:60%;width:5px;height:5px;background:#D4A574;"></div>
+    <div class="dot dot-sm" style="top:95%;left:80%;width:3px;height:3px;background:#D4C5A9;"></div>
+    <div class="dot dot-lg" style="top:96%;left:8%;width:9px;height:9px;background:#C4A882;"></div>
+    <div class="dot" style="top:97%;left:48%;width:4px;height:4px;background:#D4A574;"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="Sentricodelabs Home">Sentricode<span>labs</span></a>
+      <nav class="nav" role="navigation" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="policy.html">Policy</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="home" aria-label="Hero">
+    <div class="hero-gradient" aria-hidden="true"></div>
+    <canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="container hero-content">
+      <h1 data-editable="hero-heading">Custom Software That Scales With You</h1>
+      <p data-editable="hero-desc">We build purposeful software for modern teams—from web and mobile apps to full-scale enterprise platforms. Expert development, transparent process, delivered on time.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Start a Project</a>
+        <a href="#services" class="btn btn-secondary">See What We Build</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drip: Hero → About -->
+  <div class="drip-wrap" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="drip-path-1" d="M0,8 C200,18 400,2 600,10 C800,18 1000,4 1200,12 C1320,18 1400,8 1440,10 
+          L1440,34
+          C1420,34 1395,50 1380,50 C1365,50 1340,34 1320,34
+          C1300,34 1275,38 1260,38 C1245,38 1220,34 1200,34
+          C1180,34 1155,50 1140,50 C1125,50 1100,34 1080,34
+          C1060,34 1035,46 1020,46 C1005,46 980,34 960,34
+          C940,34 915,50 900,50 C885,50 860,34 840,34
+          C820,34 795,38 780,38 C765,38 740,34 720,34
+          C700,34 675,50 660,50 C645,50 620,34 600,34
+          C580,34 555,46 540,46 C525,46 500,34 480,34
+          C460,34 435,50 420,50 C405,50 380,34 360,34
+          C340,34 315,40 300,40 C285,40 260,34 240,34
+          C220,34 195,50 180,50 C165,50 140,34 120,34
+          C100,34 75,46 60,46 C45,46 20,34 0,34 Z"/>
+      </defs>
+
+      <!-- Network background -->
+      <g class="drip-network">
+        <line x1="100" y1="8" x2="280" y2="20"/>
+        <line x1="280" y1="20" x2="450" y2="6"/>
+        <line x1="450" y1="6" x2="620" y2="22"/>
+        <line x1="620" y1="22" x2="800" y2="10"/>
+        <line x1="800" y1="10" x2="980" y2="24"/>
+        <line x1="980" y1="24" x2="1150" y2="8"/>
+        <line x1="1150" y1="8" x2="1320" y2="18"/>
+        <circle cx="100" cy="8" r="1.5"/>
+        <circle cx="280" cy="20" r="2"/>
+        <circle cx="450" cy="6" r="1.5"/>
+        <circle cx="620" cy="22" r="2"/>
+        <circle cx="800" cy="10" r="1.5"/>
+        <circle cx="980" cy="24" r="2"/>
+        <circle cx="1150" cy="8" r="1.5"/>
+        <circle cx="1320" cy="18" r="2"/>
+      </g>
+
+      <!-- Layer 3 (back) – muted gold -->
+      <use class="drip-back drip-fill-2" href="#drip-path-1" transform="translate(0, 5)"/>
+
+      <!-- Layer 2 (mid) – pale beige -->
+      <use class="drip-mid drip-fill-1" href="#drip-path-1" transform="translate(0, 2.5)"/>
+
+      <!-- Layer 1 (front) – crisp white -->
+      <use class="drip-front" href="#drip-path-1"/>
+
+      <!-- Floating dots -->
+      <circle class="drip-dot" cx="140" cy="56" r="3" fill="#D4A574"/>
+      <circle class="drip-dot" cx="360" cy="60" r="5" fill="#D4C5A9"/>
+      <circle class="drip-dot" cx="580" cy="54" r="2.5" fill="#C4A882"/>
+      <circle class="drip-dot" cx="820" cy="62" r="4" fill="#D4A574"/>
+      <circle class="drip-dot" cx="1050" cy="56" r="3.5" fill="#D4C5A9"/>
+      <circle class="drip-dot" cx="1280" cy="58" r="2" fill="#C4A882"/>
+    </svg>
+  </div>
+
+  <!-- About -->
+  <section class="section" id="about" aria-labelledby="about-heading">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <span class="section-label">About Us</span>
+          <h2 id="about-heading" data-editable="about-heading">Building software that actually works—for real people</h2>
+          <p data-editable="about-p1">Sentricodelabs is a small, focused team of engineers and designers who believe software should be simple, reliable, and a pleasure to use. We don't do bureaucracy. We do shipping.</p>
+          <p data-editable="about-p2">Every project starts with understanding your goals, your users, and your constraints. Then we design and build solutions that fit—not the other way around. Whether you need a customer-facing web app, an internal tool, or a complete platform overhaul, we bring the same care and attention to detail.</p>
+        </div>
+        <div class="about-image reveal reveal-delay-1" aria-hidden="true">
+          <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="30" width="50" height="90" rx="8" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="75" y="20" width="50" height="110" rx="8" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="140" y="40" width="50" height="80" rx="8" stroke="currentColor" stroke-width="2" fill="none"/>
+            <line x1="35" y1="75" x2="35" y2="75" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <line x1="100" y1="55" x2="100" y2="95" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <line x1="165" y1="70" x2="165" y2="90" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drip: About → Services -->
+  <div class="drip-wrap" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="drip-path-2" d="M0,10 C200,20 400,4 600,12 C800,22 1000,6 1200,14 C1320,20 1400,10 1440,12 
+          L1440,34
+          C1420,36 1395,50 1380,50 C1365,50 1340,36 1320,34
+          C1300,34 1275,44 1260,44 C1245,44 1220,34 1200,34
+          C1180,34 1155,38 1140,38 C1125,38 1100,34 1080,34
+          C1060,34 1035,50 1020,50 C1005,50 980,34 960,34
+          C940,34 915,46 900,46 C885,46 860,34 840,34
+          C820,34 795,50 780,50 C765,50 740,34 720,34
+          C700,34 675,38 660,38 C645,38 620,34 600,34
+          C580,34 555,50 540,50 C525,50 500,34 480,34
+          C460,34 435,44 420,44 C405,44 380,34 360,34
+          C340,34 315,50 300,50 C285,50 260,34 240,34
+          C220,34 195,40 180,40 C165,40 140,34 120,34
+          C100,34 75,50 60,50 C45,50 20,34 0,34 Z"/>
+      </defs>
+
+      <!-- Network background -->
+      <g class="drip-network">
+        <line x1="80" y1="12" x2="250" y2="6"/>
+        <line x1="250" y1="6" x2="420" y2="18"/>
+        <line x1="420" y1="18" x2="590" y2="8"/>
+        <line x1="590" y1="8" x2="760" y2="22"/>
+        <line x1="760" y1="22" x2="930" y2="6"/>
+        <line x1="930" y1="6" x2="1100" y2="20"/>
+        <line x1="1100" y1="20" x2="1270" y2="10"/>
+        <line x1="1270" y1="10" x2="1400" y2="16"/>
+        <circle cx="80" cy="12" r="2"/>
+        <circle cx="250" cy="6" r="1.5"/>
+        <circle cx="420" cy="18" r="2"/>
+        <circle cx="590" cy="8" r="1.5"/>
+        <circle cx="760" cy="22" r="2"/>
+        <circle cx="930" cy="6" r="1.5"/>
+        <circle cx="1100" cy="20" r="2"/>
+        <circle cx="1270" cy="10" r="1.5"/>
+        <circle cx="1400" cy="16" r="2"/>
+      </g>
+
+      <!-- Layer 3 (back) – muted gold -->
+      <use class="drip-back drip-fill-2" href="#drip-path-2" transform="translate(0, 5)"/>
+
+      <!-- Layer 2 (mid) – pale beige -->
+      <use class="drip-mid drip-fill-1" href="#drip-path-2" transform="translate(0, 2.5)"/>
+
+      <!-- Layer 1 (front) – crisp white -->
+      <use class="drip-front" href="#drip-path-2"/>
+
+      <!-- Floating dots -->
+      <circle class="drip-dot" cx="100" cy="58" r="4" fill="#D4C5A9"/>
+      <circle class="drip-dot" cx="320" cy="54" r="2.5" fill="#C4A882"/>
+      <circle class="drip-dot" cx="550" cy="60" r="5" fill="#D4A574"/>
+      <circle class="drip-dot" cx="780" cy="56" r="3" fill="#D4C5A9"/>
+      <circle class="drip-dot" cx="1020" cy="62" r="4.5" fill="#C4A882"/>
+      <circle class="drip-dot" cx="1250" cy="56" r="2" fill="#D4A574"/>
+    </svg>
+  </div>
+
+  <!-- Services -->
+  <section class="section" id="services" aria-labelledby="services-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">What We Build</span>
+        <h2 id="services-heading">Services designed to move your business forward</h2>
+        <p>From concept to launch, we cover the full spectrum of software development.</p>
+      </div>
+      <div class="services-grid">
+        <article class="service-card reveal reveal-delay-1">
+          <div class="service-icon sand" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><path d="M9 21V9"/>
+            </svg>
+          </div>
+          <h3 data-editable="service-title-1">Web Applications</h3>
+          <p data-editable="service-desc-1">Fast, accessible web apps built with modern frameworks. Responsive by default, optimized for performance, and designed to grow with your user base.</p>
+        </article>
+        <article class="service-card reveal reveal-delay-2">
+          <div class="service-icon teal" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/>
+            </svg>
+          </div>
+          <h3 data-editable="service-title-2">Mobile Apps</h3>
+          <p data-editable="service-desc-2">Native-feeling mobile experiences for iOS and Android. We use cross-platform tools that ship fast without sacrificing quality or user experience.</p>
+        </article>
+        <article class="service-card reveal reveal-delay-3">
+          <div class="service-icon taupe" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3 data-editable="service-title-3">Custom Platforms</h3>
+          <p data-editable="service-desc-3">Enterprise-grade platforms, internal tools, and APIs tailored to your workflows. We integrate with your existing stack and automate the rest.</p>
+        </article>
+        <article class="service-card reveal reveal-delay-1">
+          <div class="service-icon sand" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <h3 data-editable="service-title-4">Security Testing</h3>
+          <p data-editable="service-desc-4">Comprehensive security assessments for web and mobile applications. We identify vulnerabilities and help you build bullet-proof systems your users can trust.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drip: Services → Stats -->
+  <div class="drip-wrap" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="drip-path-3" d="M0,6 C200,16 400,2 600,8 C800,16 1000,4 1200,10 C1320,16 1400,6 1440,8 
+          L1440,34
+          C1420,36 1395,50 1380,50 C1365,50 1340,36 1320,34
+          C1300,34 1275,46 1260,46 C1245,46 1220,34 1200,34
+          C1180,34 1155,50 1140,50 C1125,50 1100,34 1080,34
+          C1060,34 1035,40 1020,40 C1005,40 980,34 960,34
+          C940,34 915,50 900,50 C885,50 860,34 840,34
+          C820,34 795,44 780,44 C765,44 740,34 720,34
+          C700,34 675,50 660,50 C645,50 620,34 600,34
+          C580,34 555,38 540,38 C525,38 500,34 480,34
+          C460,34 435,50 420,50 C405,50 380,34 360,34
+          C340,34 315,46 300,46 C285,46 260,34 240,34
+          C220,34 195,50 180,50 C165,50 140,34 120,34
+          C100,34 75,40 60,40 C45,40 20,34 0,34 Z"/>
+      </defs>
+
+      <!-- Network background -->
+      <g class="drip-network">
+        <line x1="120" y1="6" x2="300" y2="18"/>
+        <line x1="300" y1="18" x2="480" y2="8"/>
+        <line x1="480" y1="8" x2="660" y2="20"/>
+        <line x1="660" y1="20" x2="840" y2="6"/>
+        <line x1="840" y1="6" x2="1020" y2="18"/>
+        <line x1="1020" y1="18" x2="1200" y2="8"/>
+        <line x1="1200" y1="8" x2="1380" y2="16"/>
+        <circle cx="120" cy="6" r="2"/>
+        <circle cx="300" cy="18" r="1.5"/>
+        <circle cx="480" cy="8" r="2"/>
+        <circle cx="660" cy="20" r="1.5"/>
+        <circle cx="840" cy="6" r="2"/>
+        <circle cx="1020" cy="18" r="1.5"/>
+        <circle cx="1200" cy="8" r="2"/>
+        <circle cx="1380" cy="16" r="1.5"/>
+      </g>
+
+      <!-- Layer 3 (back) – muted gold -->
+      <use class="drip-back drip-fill-2" href="#drip-path-3" transform="translate(0, 5)"/>
+
+      <!-- Layer 2 (mid) – pale beige -->
+      <use class="drip-mid drip-fill-1" href="#drip-path-3" transform="translate(0, 2.5)"/>
+
+      <!-- Layer 1 (front) – crisp white -->
+      <use class="drip-front" href="#drip-path-3"/>
+
+      <!-- Floating dots -->
+      <circle class="drip-dot" cx="160" cy="58" r="3.5" fill="#C4A882"/>
+      <circle class="drip-dot" cx="400" cy="56" r="2" fill="#D4A574"/>
+      <circle class="drip-dot" cx="640" cy="60" r="4.5" fill="#D4C5A9"/>
+      <circle class="drip-dot" cx="880" cy="54" r="3" fill="#C4A882"/>
+      <circle class="drip-dot" cx="1120" cy="58" r="5" fill="#D4A574"/>
+      <circle class="drip-dot" cx="1360" cy="56" r="2.5" fill="#D4C5A9"/>
+    </svg>
+  </div>
+
+  <!-- Stats -->
+  <section class="stats" aria-label="Company stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="reveal">
+          <div class="stat-number" data-editable="stat-1">25+</div>
+          <div class="stat-label">Clients Served</div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <div class="stat-number" data-editable="stat-2">10+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="stat-number" data-editable="stat-3">3+</div>
+          <div class="stat-label">Years in Business</div>
+        </div>
+        <div class="reveal reveal-delay-3">
+          <div class="stat-number" data-editable="stat-4">15+</div>
+          <div class="stat-label">Team Members</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drip: Stats → Contact -->
+  <div class="drip-wrap" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="drip-path-4" d="M0,12 C200,22 400,6 600,14 C800,24 1000,8 1200,16 C1320,22 1400,12 1440,14 
+          L1440,34
+          C1420,36 1395,50 1380,50 C1365,50 1340,36 1320,34
+          C1300,34 1275,50 1260,50 C1245,50 1220,34 1200,34
+          C1180,34 1155,46 1140,46 C1125,46 1100,34 1080,34
+          C1060,34 1035,38 1020,38 C1005,38 980,34 960,34
+          C940,34 915,50 900,50 C885,50 860,34 840,34
+          C820,34 795,50 780,50 C765,50 740,34 720,34
+          C700,34 675,46 660,46 C645,46 620,34 600,34
+          C580,34 555,38 540,38 C525,38 500,34 480,34
+          C460,34 435,50 420,50 C405,50 380,34 360,34
+          C340,34 315,46 300,46 C285,46 260,34 240,34
+          C220,34 195,50 180,50 C165,50 140,34 120,34
+          C100,34 75,38 60,38 C45,38 20,34 0,34 Z"/>
+      </defs>
+
+      <!-- Network background -->
+      <g class="drip-network">
+        <line x1="60" y1="16" x2="220" y2="8"/>
+        <line x1="220" y1="8" x2="400" y2="20"/>
+        <line x1="400" y1="20" x2="580" y2="6"/>
+        <line x1="580" y1="6" x2="760" y2="18"/>
+        <line x1="760" y1="18" x2="940" y2="8"/>
+        <line x1="940" y1="8" x2="1120" y2="22"/>
+        <line x1="1120" y1="22" x2="1300" y2="10"/>
+        <line x1="1300" y1="10" x2="1420" y2="14"/>
+        <circle cx="60" cy="16" r="1.5"/>
+        <circle cx="220" cy="8" r="2"/>
+        <circle cx="400" cy="20" r="1.5"/>
+        <circle cx="580" cy="6" r="2"/>
+        <circle cx="760" cy="18" r="1.5"/>
+        <circle cx="940" cy="8" r="2"/>
+        <circle cx="1120" cy="22" r="1.5"/>
+        <circle cx="1300" cy="10" r="2"/>
+        <circle cx="1420" cy="14" r="1.5"/>
+      </g>
+
+      <!-- Layer 3 (back) – muted gold -->
+      <use class="drip-back drip-fill-2" href="#drip-path-4" transform="translate(0, 5)"/>
+
+      <!-- Layer 2 (mid) – pale beige -->
+      <use class="drip-mid drip-fill-1" href="#drip-path-4" transform="translate(0, 2.5)"/>
+
+      <!-- Layer 1 (front) – crisp white -->
+      <use class="drip-front" href="#drip-path-4"/>
+
+      <!-- Floating dots -->
+      <circle class="drip-dot" cx="80" cy="58" r="2.5" fill="#D4A574"/>
+      <circle class="drip-dot" cx="280" cy="56" r="4" fill="#C4A882"/>
+      <circle class="drip-dot" cx="520" cy="60" r="3" fill="#D4C5A9"/>
+      <circle class="drip-dot" cx="740" cy="54" r="5" fill="#D4A574"/>
+      <circle class="drip-dot" cx="980" cy="58" r="2" fill="#C4A882"/>
+      <circle class="drip-dot" cx="1220" cy="62" r="4.5" fill="#D4C5A9"/>
+    </svg>
+  </div>
+
+  <!-- Contact -->
+  <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Let's Talk</span>
+        <h2 id="contact-heading" data-editable="contact-heading">Ready to Start? Tell Us About Your Project</h2>
+        <p data-editable="contact-desc">Answer a few quick questions and we'll get back to you within 24 hours.</p>
+      </div>
+      <div class="contact-form-wrap reveal reveal-delay-1">
+        <form id="contact-form" class="form-card" action="https://script.google.com/macros/s/AKfycbwuNO_iAKNZbMRMUPBq9RK8jW3-so6MP7fhEYvNqNv-0He2-chyuaM1FcZFZ-tu40nT/exec" method="POST">
+          <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4">
+            <span class="progress-step active"></span>
+            <span class="progress-step"></span>
+            <span class="progress-step"></span>
+            <span class="progress-step"></span>
+          </div>
+          <div id="form-message" class="form-message" role="alert"></div>
+
+          <!-- Step 1: Project Type -->
+          <div class="form-step active" data-step="0" role="group" aria-labelledby="step1-label">
+            <h3 id="step1-label">What best describes your project?</h3>
+            <p class="step-desc">Select the option that fits closest.</p>
+            <div class="form-options grid-2">
+              <div class="option-card" data-value="Web Application" tabindex="0" role="button">Web Application</div>
+              <div class="option-card" data-value="Mobile App" tabindex="0" role="button">Mobile App</div>
+              <div class="option-card" data-value="Desktop Application" tabindex="0" role="button">Desktop Application</div>
+              <div class="option-card" data-value="Website Development" tabindex="0" role="button">Website Development</div>
+              <div class="option-card" data-value="Custom Software" tabindex="0" role="button">Custom Software</div>
+              <div class="option-card" data-value="Consultation" tabindex="0" role="button">Consultation</div>
+              <div class="option-card" data-value="Website Security Testing" tabindex="0" role="button">Website Security Testing</div>
+              <div class="option-card" data-value="Application Security Testing" tabindex="0" role="button">Application Security Testing</div>
+            </div>
+            <div class="form-nav">
+              <span></span>
+              <button type="button" class="btn btn-primary btn-next">Next Step</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Timeline -->
+          <div class="form-step" data-step="1" role="group" aria-labelledby="step2-label">
+            <h3 id="step2-label">What's your timeline?</h3>
+            <p class="step-desc">No pressure—this helps us plan.</p>
+            <div class="form-options grid-2">
+              <div class="option-card" data-value="ASAP" tabindex="0" role="button">ASAP</div>
+              <div class="option-card" data-value="1-3 months" tabindex="0" role="button">1-3 Months</div>
+              <div class="option-card" data-value="3-6 months" tabindex="0" role="button">3-6 Months</div>
+              <div class="option-card" data-value="Not sure yet" tabindex="0" role="button">Not Sure Yet</div>
+            </div>
+            <div class="form-nav">
+              <button type="button" class="btn btn-back">Back</button>
+              <button type="button" class="btn btn-primary btn-next">Next Step</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Contact Info -->
+          <div class="form-step" data-step="2" role="group" aria-labelledby="step3-label">
+            <h3 id="step3-label">How should we reach you?</h3>
+            <p class="step-desc">Choose your preferred contact method.</p>
+            <div class="toggle-group" role="radiogroup" aria-label="Contact method">
+              <div class="toggle-option active" data-value="phone" role="radio" aria-checked="true" tabindex="0">Phone</div>
+              <div class="toggle-option" data-value="email" role="radio" aria-checked="false" tabindex="0">Email</div>
+            </div>
+            <div id="phone-input">
+              <input type="tel" class="form-input" name="phone" placeholder="+1 (555) 123-4567" autocomplete="tel" required>
+            </div>
+            <div id="email-input" style="display:none;">
+              <input type="email" class="form-input" name="email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <input type="hidden" name="contact_value" value="">
+            <div class="form-nav">
+              <button type="button" class="btn btn-back">Back</button>
+              <button type="button" class="btn btn-primary btn-next">Next Step</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Name -->
+          <div class="form-step" data-step="3" role="group" aria-labelledby="step4-label">
+            <h3 id="step4-label">One last thing—your name?</h3>
+            <p class="step-desc">We like to know who we're talking to.</p>
+            <input type="text" class="form-input" name="name" placeholder="Your name" autocomplete="name" required>
+            <div class="form-nav">
+              <button type="button" class="btn btn-back">Back</button>
+              <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+          </div>
+
+          <!-- Confirmation -->
+          <div id="form-confirmation" class="confirmation" style="display:none;">
+            <div class="confirmation-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <h3>Thanks for reaching out to us!</h3>
+            <p>Our team will contact you in under 24 hours.</p>
+            <div class="whatsapp-hint">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#075E54"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <span>Prefer WhatsApp? <a href="https://wa.me/1234567890?text=Hello%20Sentricodelabs" style="color:#075E54;text-decoration:underline;">Chat with us</a></span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Sentricode<span>labs</span></div>
+          <img src="images/sentricode%20logo.png" alt="" class="footer-logo-img" aria-hidden="true">
+          <p>&copy; 2026 Sentricodelabs. All rights reserved. <span class="auth-trigger" aria-hidden="true">🤖</span></p>
+        </div>
+        <div class="footer-links">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#contact">Contact</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="policy.html">Policy</a>
+        </div>
+        <div class="footer-social">
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="auth-overlay" role="dialog" aria-modal="true" aria-label="Admin sign in" hidden>
+    <div class="auth-dialog">
+      <button class="auth-close" aria-label="Close">&times;</button>
+      <h3>Admin Access</h3>
+      <div id="auth-error" class="auth-error" role="alert" hidden></div>
+      <div class="auth-field">
+        <label for="auth-username">Username</label>
+        <input type="text" id="auth-username" class="auth-input" autocomplete="username" spellcheck="false">
+      </div>
+      <div class="auth-field">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" class="auth-input" autocomplete="current-password">
+      </div>
+      <button id="auth-submit" class="btn btn-primary auth-submit">Sign In</button>
+    </div>
+  </div>
+
+  <!-- Save button (visible in edit mode) -->
+  <div id="save-bar" class="save-bar" hidden>
+    <button id="save-btn" class="btn btn-primary">Save Changes</button>
+    <button id="exit-edit-btn" class="btn btn-secondary">Exit Edit Mode</button>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
