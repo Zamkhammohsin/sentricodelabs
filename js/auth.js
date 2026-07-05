@@ -4,21 +4,22 @@
   var SUPABASE_URL = 'https://gczbyxdchknsfepewfub.supabase.co';
   var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjemJ5eGRjaGtuc2ZlcGV3ZnViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNDgzNTgsImV4cCI6MjA5ODgyNDM1OH0.k-0olIoNwjuqMRkUdEAeu5MURvylLWzHSKmriFqpN94';
 
-  var supabase = null;
-  if (typeof supabaseClient !== 'undefined') {
-    supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var sbClient = null;
+
+  function getSB() {
+    if (sbClient) return sbClient;
+    if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+      sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else if (typeof createClient !== 'undefined') {
+      sbClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+    return sbClient;
   }
 
-  function getSupabase() {
-    if (supabase) return supabase;
-    if (typeof supabaseClient !== 'undefined') {
-      supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-    return supabase;
-  }
+  getSB();
 
   window.signUpAdmins = function () {
-    var sb = getSupabase();
+    var sb = getSB();
     if (!sb) { console.error('Supabase not loaded'); return; }
     var users = [
       { email: 'zam@sentricodelabs.com', password: 'z@1k' },
@@ -34,25 +35,25 @@
   };
 
   function loginUser(email, password) {
-    var sb = getSupabase();
+    var sb = getSB();
     if (!sb) return Promise.reject({ message: 'Supabase not loaded' });
     return sb.auth.signInWithPassword({ email: email, password: password });
   }
 
   function logoutUser() {
-    var sb = getSupabase();
+    var sb = getSB();
     if (!sb) return Promise.reject({ message: 'Supabase not loaded' });
     return sb.auth.signOut();
   }
 
   function checkAuthStatus() {
-    var sb = getSupabase();
+    var sb = getSB();
     if (!sb) return Promise.resolve({ data: { session: null } });
     return sb.auth.getSession();
   }
 
   function getCurrentUser() {
-    var sb = getSupabase();
+    var sb = getSB();
     if (!sb) return null;
     var session = sb.auth.getSession();
     if (session && session.data && session.data.session) {
