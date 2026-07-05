@@ -459,7 +459,7 @@
         <p data-editable="contact-desc">Answer a few quick questions and we'll get back to you within 24 hours.</p>
       </div>
       <div class="contact-form-wrap reveal reveal-delay-1">
-        <form id="contact-form" class="form-card" action="https://script.google.com/macros/s/AKfycbwxOT_u6FgHORGLwsMSbzj1cRW_jyIbrFiAzdrz2jzCAM2QD5-zQfGqkr7Gv_VzKmgF/exec" method="POST">
+        <form id="contact-form" class="form-card" action="https://usebasin.com/f/53763bd414c7" method="POST">
           <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4">
             <span class="progress-step active"></span>
             <span class="progress-step"></span>
@@ -519,6 +519,9 @@
               <input type="email" class="form-input" name="email" placeholder="you@example.com" autocomplete="email">
             </div>
             <input type="hidden" name="contact_value" value="">
+            <input type="hidden" name="contactMethod" value="">
+            <input type="hidden" name="projectType" value="">
+            <input type="hidden" name="timeline" value="">
             <div class="form-nav">
               <button type="button" class="btn btn-back">Back</button>
               <button type="button" class="btn btn-primary btn-next">Next Step</button>
@@ -590,8 +593,8 @@
       <h3>Admin Access</h3>
       <div id="auth-error" class="auth-error" role="alert" hidden></div>
       <div class="auth-field">
-        <label for="auth-username">Username</label>
-        <input type="text" id="auth-username" class="auth-input" autocomplete="username" spellcheck="false">
+        <label for="auth-email">Email</label>
+        <input type="email" id="auth-email" class="auth-input" autocomplete="email" spellcheck="false">
       </div>
       <div class="auth-field">
         <label for="auth-password">Password</label>
@@ -607,6 +610,7 @@
     <button id="exit-edit-btn" class="btn btn-secondary">Exit Edit Mode</button>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/auth.js"></script>
 </body>

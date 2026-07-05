@@ -1,18 +1,78 @@
 (function () {
   'use strict';
 
-  var SCRIPT_URL = document.querySelector('#contact-form').action;
+  var SUPABASE_URL = 'https://gczbyxdchknsfepewfub.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjemJ5eGRjaGtuc2ZlcGV3ZnViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNDgzNTgsImV4cCI6MjA5ODgyNDM1OH0.k-0olIoNwjuqMRkUdEAeu5MURvylLWzHSKmriFqpN94';
 
-  /* ─── Hidden trigger: 5 clicks in 3s ─── */
+  var supabase = null;
+  if (typeof supabaseClient !== 'undefined') {
+    supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+
+  function getSupabase() {
+    if (supabase) return supabase;
+    if (typeof supabaseClient !== 'undefined') {
+      supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+    return supabase;
+  }
+
+  window.signUpAdmins = function () {
+    var sb = getSupabase();
+    if (!sb) { console.error('Supabase not loaded'); return; }
+    var users = [
+      { email: 'zam@sentricodelabs.com', password: 'z@1k' },
+      { email: 'saiqa@sentricodelabs.com', password: 's@2k' }
+    ];
+    users.forEach(function (u) {
+      sb.auth.signUp({ email: u.email, password: u.password })
+        .then(function (res) {
+          if (res.error) console.error('Signup failed for ' + u.email + ':', res.error.message);
+          else console.log('Signup success for ' + u.email + ':', res.data);
+        });
+    });
+  };
+
+  function loginUser(email, password) {
+    var sb = getSupabase();
+    if (!sb) return Promise.reject({ message: 'Supabase not loaded' });
+    return sb.auth.signInWithPassword({ email: email, password: password });
+  }
+
+  function logoutUser() {
+    var sb = getSupabase();
+    if (!sb) return Promise.reject({ message: 'Supabase not loaded' });
+    return sb.auth.signOut();
+  }
+
+  function checkAuthStatus() {
+    var sb = getSupabase();
+    if (!sb) return Promise.resolve({ data: { session: null } });
+    return sb.auth.getSession();
+  }
+
+  function getCurrentUser() {
+    var sb = getSupabase();
+    if (!sb) return null;
+    var session = sb.auth.getSession();
+    if (session && session.data && session.data.session) {
+      return session.data.session.user;
+    }
+    return null;
+  }
+
   var trigger = document.querySelector('.auth-trigger');
   var clickCount = 0;
   var clickTimer = null;
   var modal = document.getElementById('auth-modal');
-  var isAuthenticated = !!sessionStorage.getItem('auth_token');
+  var isAuthenticated = false;
 
-  function cleanUser(str) {
-    return str.replace(/[^a-zA-Z0-9._-]/g, '');
-  }
+  checkAuthStatus().then(function (res) {
+    if (res.data && res.data.session) {
+      isAuthenticated = true;
+      enterEditMode();
+    }
+  });
 
   if (trigger) {
     trigger.addEventListener('click', function (e) {
@@ -29,12 +89,11 @@
     });
   }
 
-  /* ─── Modal ─── */
   function showModal() {
     if (!modal) return;
     modal.hidden = false;
     modal.setAttribute('aria-hidden', 'false');
-    document.getElementById('auth-username').focus();
+    document.getElementById('auth-email').focus();
   }
 
   function hideModal() {
@@ -42,7 +101,7 @@
     modal.hidden = true;
     modal.setAttribute('aria-hidden', 'true');
     document.getElementById('auth-error').hidden = true;
-    document.getElementById('auth-username').value = '';
+    document.getElementById('auth-email').value = '';
     document.getElementById('auth-password').value = '';
   }
 
@@ -54,63 +113,42 @@
 
   document.querySelector('.auth-close').addEventListener('click', hideModal);
 
-  /* ─── Login ─── */
   document.getElementById('auth-submit').addEventListener('click', function () {
-    var username = cleanUser(document.getElementById('auth-username').value.trim());
+    var email = document.getElementById('auth-email').value.trim();
     var password = document.getElementById('auth-password').value;
     var errorEl = document.getElementById('auth-error');
 
-    if (!username || !password) {
+    if (!email || !password) {
       errorEl.textContent = 'Invalid credentials.';
       errorEl.hidden = false;
       return;
     }
 
     this.disabled = true;
-    this.textContent = 'Signing in…';
+    this.textContent = 'Signing in\u2026';
     errorEl.hidden = true;
 
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        v: 1,
-        t: 'l',
-        u: username,
-        p: password,
-        a: navigator.userAgent
-      })
-    })
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
-      if (data && data.s) {
-        sessionStorage.setItem('auth_token', data.t);
-        sessionStorage.setItem('auth_role', data.r || '');
-        sessionStorage.setItem('auth_user', username);
+    loginUser(email, password)
+      .then(function (res) {
+        if (res.error) throw res.error;
+        isAuthenticated = true;
         hideModal();
         enterEditMode();
-      } else {
+      })
+      .catch(function (err) {
         errorEl.textContent = 'Invalid credentials.';
         errorEl.hidden = false;
-      }
-    })
-    .catch(function () {
-      errorEl.textContent = 'Invalid credentials.';
-      errorEl.hidden = false;
-    })
-    .finally(function () {
-      document.getElementById('auth-submit').disabled = false;
-      document.getElementById('auth-submit').textContent = 'Sign In';
-    });
+      })
+      .finally(function () {
+        document.getElementById('auth-submit').disabled = false;
+        document.getElementById('auth-submit').textContent = 'Sign In';
+      });
   });
 
   document.getElementById('auth-password').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') document.getElementById('auth-submit').click();
   });
 
-  /* ─── Edit Mode ─── */
   var saveBar = document.getElementById('save-bar');
   var saveBtn = document.getElementById('save-btn');
   var exitBtn = document.getElementById('exit-edit-btn');
@@ -126,28 +164,22 @@
     var els = document.querySelectorAll('[data-editable]');
     els.forEach(function (el) { el.contentEditable = 'false'; });
     if (saveBar) saveBar.hidden = true;
+    isAuthenticated = false;
   }
 
-  /* ─── Load saved content ─── */
   function loadContentOverrides() {
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ v: 1, t: 'g' })
-    })
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      if (data && data.s && data.c) {
-        data.c.forEach(function (item) {
+    try {
+      var saved = localStorage.getItem('sc_content');
+      if (saved) {
+        var items = JSON.parse(saved);
+        items.forEach(function (item) {
           var el = document.querySelector('[data-editable="' + item.i + '"]');
           if (el) el.innerHTML = item.h;
         });
       }
-    })
-    .catch(function () {});
+    } catch (e) {}
   }
 
-  /* ─── Save changes ─── */
   function saveChanges() {
     var els = document.querySelectorAll('[data-editable]');
     var content = [];
@@ -159,34 +191,16 @@
     });
 
     saveBtn.disabled = true;
-    saveBtn.textContent = 'Saving…';
+    saveBtn.textContent = 'Saving\u2026';
 
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        v: 1,
-        t: 's',
-        k: sessionStorage.getItem('auth_token'),
-        u: sessionStorage.getItem('auth_user'),
-        c: content
-      })
-    })
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      if (data && data.s) {
-        saveBtn.textContent = 'Saved!';
-        setTimeout(function () { saveBtn.textContent = 'Save Changes'; }, 2000);
-      } else {
-        saveBtn.textContent = 'Save Failed';
-      }
-    })
-    .catch(function () {
+    try {
+      localStorage.setItem('sc_content', JSON.stringify(content));
+      saveBtn.textContent = 'Saved!';
+      setTimeout(function () { saveBtn.textContent = 'Save Changes'; }, 2000);
+    } catch (e) {
       saveBtn.textContent = 'Save Failed';
-    })
-    .finally(function () {
-      saveBtn.disabled = false;
-    });
+    }
+    saveBtn.disabled = false;
   }
 
   if (saveBtn) saveBtn.addEventListener('click', saveChanges);
@@ -200,7 +214,4 @@
     }
   });
 
-  if (isAuthenticated) {
-    enterEditMode();
-  }
 })();

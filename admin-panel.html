@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Sentricodelabs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/sentricode%20logo.png">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    .admin-body {
+      background: var(--bg-secondary);
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+    }
+    .admin-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .admin-header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      color: var(--text-primary);
+    }
+    .admin-header h1 span { color: var(--accent-1); }
+    .admin-user {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-logout {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    .btn-logout:hover {
+      border-color: #b91c1c;
+      color: #b91c1c;
+    }
+    .admin-main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+    .admin-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 2px 12px rgba(42,42,40,0.06);
+      margin-bottom: 24px;
+    }
+    .admin-card h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 0 0 20px;
+      color: var(--text-primary);
+    }
+    .admin-card label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .admin-card input,
+    .admin-card textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      box-sizing: border-box;
+      margin-bottom: 16px;
+      transition: var(--transition);
+    }
+    .admin-card input:focus,
+    .admin-card textarea:focus {
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 3px rgba(212,165,116,0.15);
+    }
+    .admin-card textarea { resize: vertical; min-height: 80px; }
+    .admin-card .btn-save {
+      background: var(--accent-1);
+      color: var(--white);
+      border: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    .admin-card .btn-save:hover { background: #c49666; }
+    .admin-card .btn-save:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .admin-card .field-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .admin-card .field-row > div { flex: 1; min-width: 180px; }
+    .admin-saved-msg {
+      color: #15803d;
+      font-size: 0.88rem;
+      margin-left: 12px;
+      display: none;
+    }
+    .admin-saved-msg.show { display: inline; }
+    .access-denied {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 24px;
+    }
+    .access-denied h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 8px;
+    }
+    .access-denied p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    .access-denied a {
+      color: var(--accent-1);
+      text-decoration: underline;
+      display: inline-block;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <div id="admin-app" style="display:none;">
+    <header class="admin-header">
+      <h1>Sentricode<span>labs</span> Admin</h1>
+      <div class="admin-user">
+        <span id="admin-email-display"></span>
+        <button class="btn-logout" id="logout-btn">Sign Out</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="admin-card">
+        <h2>Site Content</h2>
+
+        <label for="field-hero-heading">Hero Heading</label>
+        <input type="text" id="field-hero-heading" data-editable-field="hero-heading">
+
+        <label for="field-hero-desc">Hero Description</label>
+        <textarea id="field-hero-desc" data-editable-field="hero-desc"></textarea>
+
+        <div class="field-row">
+          <div>
+            <label for="field-stat-1">Stat 1</label>
+            <input type="text" id="field-stat-1" data-editable-field="stat-1">
+          </div>
+          <div>
+            <label for="field-stat-2">Stat 2</label>
+            <input type="text" id="field-stat-2" data-editable-field="stat-2">
+          </div>
+          <div>
+            <label for="field-stat-3">Stat 3</label>
+            <input type="text" id="field-stat-3" data-editable-field="stat-3">
+          </div>
+          <div>
+            <label for="field-stat-4">Stat 4</label>
+            <input type="text" id="field-stat-4" data-editable-field="stat-4">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label for="field-service-title-1">Service 1 Title</label>
+            <input type="text" id="field-service-title-1" data-editable-field="service-title-1">
+          </div>
+          <div>
+            <label for="field-service-desc-1">Service 1 Desc</label>
+            <textarea id="field-service-desc-1" data-editable-field="service-desc-1"></textarea>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label for="field-service-title-2">Service 2 Title</label>
+            <input type="text" id="field-service-title-2" data-editable-field="service-title-2">
+          </div>
+          <div>
+            <label for="field-service-desc-2">Service 2 Desc</label>
+            <textarea id="field-service-desc-2" data-editable-field="service-desc-2"></textarea>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label for="field-service-title-3">Service 3 Title</label>
+            <input type="text" id="field-service-title-3" data-editable-field="service-title-3">
+          </div>
+          <div>
+            <label for="field-service-desc-3">Service 3 Desc</label>
+            <textarea id="field-service-desc-3" data-editable-field="service-desc-3"></textarea>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label for="field-service-title-4">Service 4 Title</label>
+            <input type="text" id="field-service-title-4" data-editable-field="service-title-4">
+          </div>
+          <div>
+            <label for="field-service-desc-4">Service 4 Desc</label>
+            <textarea id="field-service-desc-4" data-editable-field="service-desc-4"></textarea>
+          </div>
+        </div>
+
+        <button class="btn-save" id="admin-save-btn">Save Changes</button>
+        <span class="admin-saved-msg" id="admin-saved-msg">Saved!</span>
+      </div>
+
+      <div class="admin-card">
+        <h2>Account</h2>
+        <p style="color:var(--text-secondary);font-size:0.88rem;margin:0;">
+          Logged in as <strong id="admin-email-bottom"></strong>.
+          <button class="btn-logout" id="logout-btn-2" style="margin-left:8px;">Sign Out</button>
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <div id="admin-denied" class="access-denied" style="display:none;">
+    <div>
+      <h1>Access Denied</h1>
+      <p>You must be signed in to view this page.</p>
+      <a href="index.html">Return to home</a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var SUPABASE_URL = 'https://gczbyxdchknsfepewfub.supabase.co';
+      var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjemJ5eGRjaGtuc2ZlcGV3ZnViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNDgzNTgsImV4cCI6MjA5ODgyNDM1OH0.k-0olIoNwjuqMRkUdEAeu5MURvylLWzHSKmriFqpN94';
+      var sb = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      var app = document.getElementById('admin-app');
+      var denied = document.getElementById('admin-denied');
+
+      function redirectToHome() {
+        denied.style.display = 'flex';
+        app.style.display = 'none';
+      }
+
+      sb.auth.getSession().then(function (res) {
+        if (!res.data || !res.data.session) {
+          redirectToHome();
+          return;
+        }
+        var user = res.data.session.user;
+        app.style.display = 'block';
+        document.getElementById('admin-email-display').textContent = user.email;
+        document.getElementById('admin-email-bottom').textContent = user.email;
+        loadFields();
+      }).catch(function () {
+        redirectToHome();
+      });
+
+      function loadFields() {
+        try {
+          var saved = localStorage.getItem('sc_content');
+          if (!saved) return;
+          var items = JSON.parse(saved);
+          items.forEach(function (item) {
+            var field = document.querySelector('[data-editable-field="' + item.i + '"]');
+            if (field) field.value = item.h;
+          });
+        } catch (e) {}
+      }
+
+      function saveFields() {
+        var fields = document.querySelectorAll('[data-editable-field]');
+        var content = [];
+        fields.forEach(function (field) {
+          content.push({ i: field.getAttribute('data-editable-field'), h: field.value });
+        });
+        try {
+          localStorage.setItem('sc_content', JSON.stringify(content));
+          var msg = document.getElementById('admin-saved-msg');
+          msg.classList.add('show');
+          setTimeout(function () { msg.classList.remove('show'); }, 2500);
+        } catch (e) {}
+      }
+
+      function logout() {
+        sb.auth.signOut().then(function () {
+          window.location.href = 'index.html';
+        });
+      }
+
+      document.getElementById('admin-save-btn').addEventListener('click', saveFields);
+      document.getElementById('logout-btn').addEventListener('click', logout);
+      document.getElementById('logout-btn-2').addEventListener('click', logout);
+    })();
+  </script>
+</body>
+</html>

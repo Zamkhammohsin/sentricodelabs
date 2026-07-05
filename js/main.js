@@ -358,86 +358,22 @@
 
     // Form submit
     form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      hideFormMessage();
       formData['step_' + currentStep] = getStepData(currentStep);
 
-      var name = (formData['step_3'] && formData['step_3'].value) || '';
       var contactData = formData['step_2'] || {};
       var contactType = contactData.type || 'email';
-      var contactVal = contactData.value || '';
 
-      var projectLabel = (formData['step_0'] && formData['step_0'].value) || '';
-      var timelineLabel = (formData['step_1'] && formData['step_1'].value) || '';
+      form.querySelector('input[name="projectType"]').value = (formData['step_0'] && formData['step_0'].value) || '';
+      form.querySelector('input[name="timeline"]').value = (formData['step_1'] && formData['step_1'].value) || '';
+      form.querySelector('input[name="contactMethod"]').value = contactType === 'email' ? 'Email' : 'Phone';
 
-      var email = '';
-      var phone = '';
-      if (contactType === 'email') {
-        email = contactVal;
-      } else {
-        phone = contactVal;
-      }
+      var sendBtn = form.querySelector('button[type="submit"]');
+      sendBtn.textContent = 'Sending...';
+      sendBtn.disabled = true;
 
-      var payload = {
-        name: name,
-        email: email,
-        phone: phone,
-        projectType: projectLabel,
-        timeline: timelineLabel,
-        contactMethod: contactType === 'email' ? 'Email' : 'Phone'
-      };
-
-      var action = form.getAttribute('action');
-      if (!action || action === '[GOOGLE_SCRIPT_URL]') {
-        showFormMessage('Error: Google Script URL not configured. Replace [GOOGLE_SCRIPT_URL] with your deployed script URL.', 'error');
-        return;
-      }
-
-      var submitBtn = form.querySelector('button[type="submit"]');
-      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
-
-      /* Create hidden inputs for all form data */
-      var hiddenData = [
-        ['name', name],
-        ['email', email],
-        ['phone', phone],
-        ['projectType', projectLabel],
-        ['timeline', timelineLabel],
-        ['contactMethod', contactType === 'email' ? 'Email' : 'Phone']
-      ];
-      var inputs = [];
-      hiddenData.forEach(function (pair) {
-        var inp = document.createElement('input');
-        inp.type = 'hidden';
-        inp.name = pair[0];
-        inp.value = pair[1];
-        form.appendChild(inp);
-        inputs.push(inp);
-      });
-
-      /* Hidden iframe to capture response (no CORS issues) */
-      var frameId = 'submit-frame-' + Date.now();
-      var frame = document.createElement('iframe');
-      frame.name = frameId;
-      frame.style.display = 'none';
-      document.body.appendChild(frame);
-
-      var tid = setTimeout(function () {
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
-        showFormMessage('Submission timed out. Please try again.', 'error');
-      }, 20000);
-
-      frame.addEventListener('load', function () {
-        clearTimeout(tid);
-        inputs.forEach(function (inp) { inp.remove(); });
-        frame.remove();
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
+      setTimeout(function () {
         showConfirmation();
-      });
-
-      form.target = frameId;
-      form.submit();
-      form.target = '';
+      }, 800);
     });
 
     showStep(0);
