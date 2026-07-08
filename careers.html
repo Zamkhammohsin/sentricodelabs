@@ -212,7 +212,7 @@
         <div>
           <div class="footer-logo">Sentricode<span>labs</span></div>
           <img src="images/sentricode%20logo.png" alt="" class="footer-logo-img" aria-hidden="true">
-          <p>&copy; 2026 Sentricodelabs. All rights reserved.</p>
+          <p>&copy; 2026 Sentricodelabs. All rights reserved. <span class="auth-trigger" aria-hidden="true">🤖</span></p>
         </div>
         <div class="footer-links">
           <a href="/#about">About</a>
@@ -234,6 +234,24 @@
     </div>
   </footer>
 
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="auth-overlay" role="dialog" aria-modal="true" aria-label="Admin sign in" hidden>
+    <div class="auth-dialog">
+      <button class="auth-close" aria-label="Close">&times;</button>
+      <h3>Admin Access</h3>
+      <div id="auth-error" class="auth-error" role="alert" hidden></div>
+      <div class="auth-field">
+        <label for="auth-email">Email</label>
+        <input type="email" id="auth-email" class="auth-input" autocomplete="email" spellcheck="false">
+      </div>
+      <div class="auth-field">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" class="auth-input" autocomplete="current-password">
+      </div>
+      <button id="auth-submit" class="btn btn-primary auth-submit">Sign In</button>
+    </div>
+  </div>
+
   <script>
     (function () {
       var SUPABASE_URL = 'https://gczbyxdchknsfepewfub.supabase.co';
@@ -249,16 +267,92 @@
 
       var grid = document.getElementById('cards-grid');
       var addBtn = document.getElementById('btn-add-card');
+      var trigger = document.querySelector('.auth-trigger');
+      var clickCount = 0;
+      var clickTimer = null;
+      var modal = document.getElementById('auth-modal');
+      var errorEl = document.getElementById('auth-error');
 
-      if (sb) {
-        sb.auth.getSession().then(function (res) {
-          if (res.data && res.data.session) {
-            isAdmin = true;
-            addBtn.classList.remove('hidden');
+      /* ─── 5-click trigger ─── */
+      if (trigger) {
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          clickCount++;
+          if (clickCount === 1) {
+            clickTimer = setTimeout(function () { clickCount = 0; }, 3000);
+          }
+          if (clickCount >= 5) {
+            clearTimeout(clickTimer);
+            clickCount = 0;
+            showModal();
           }
         });
       }
 
+      function showModal() {
+        if (!modal) return;
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        document.getElementById('auth-email').focus();
+      }
+
+      function hideModal() {
+        if (!modal) return;
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+        errorEl.hidden = true;
+        document.getElementById('auth-email').value = '';
+        document.getElementById('auth-password').value = '';
+      }
+
+      if (modal) {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) hideModal();
+        });
+        modal.querySelector('.auth-close').addEventListener('click', hideModal);
+      }
+
+      document.getElementById('auth-submit').addEventListener('click', function () {
+        var email = document.getElementById('auth-email').value.trim();
+        var password = document.getElementById('auth-password').value;
+        if (!email || !password) {
+          errorEl.textContent = 'Invalid credentials.';
+          errorEl.hidden = false;
+          return;
+        }
+        this.disabled = true;
+        this.textContent = 'Signing in\u2026';
+        errorEl.hidden = true;
+        if (!sb) {
+          errorEl.textContent = 'Invalid credentials.';
+          errorEl.hidden = false;
+          this.disabled = false;
+          this.textContent = 'Sign In';
+          return;
+        }
+        sb.auth.signInWithPassword({ email: email, password: password })
+          .then(function (res) {
+            if (res.error) throw res.error;
+            isAdmin = true;
+            addBtn.classList.remove('hidden');
+            hideModal();
+            renderCards();
+          })
+          .catch(function () {
+            errorEl.textContent = 'Invalid credentials.';
+            errorEl.hidden = false;
+          })
+          .finally(function () {
+            document.getElementById('auth-submit').disabled = false;
+            document.getElementById('auth-submit').textContent = 'Sign In';
+          });
+      });
+
+      document.getElementById('auth-password').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') document.getElementById('auth-submit').click();
+      });
+
+      /* ─── Careers data ─── */
       function loadCards() {
         if (!sb) {
           renderCards();
@@ -272,15 +366,13 @@
       }
 
       function saveCards() {
-        if (!sb || !isAdmin) return;
-        sb.from('careers').delete().gte('id', 0).then(function () {
+        if (!sb || !isAdmin) return Promise.resolve();
+        return sb.from('careers').delete().gte('id', 0).then(function () {
           if (cardsData.length === 0) return;
           var rows = cardsData.map(function (card, idx) {
             return { title: card.title, body: card.body, sort_order: idx };
           });
-          sb.from('careers').insert(rows).then(function (res) {
-            if (res.error) console.error(res.error);
-          });
+          return sb.from('careers').insert(rows);
         });
       }
 
