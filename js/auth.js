@@ -78,14 +78,7 @@
       if (clickCount >= 5) {
         clearTimeout(clickTimer);
         clickCount = 0;
-        checkAuthStatus().then(function (res) {
-          if (res.data && res.data.session) {
-            isAuthenticated = true;
-            enterEditMode();
-          } else {
-            showModal();
-          }
-        });
+        showModal();
       }
     });
   }
