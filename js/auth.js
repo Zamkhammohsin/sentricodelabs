@@ -146,17 +146,43 @@
   var saveBar = document.getElementById('save-bar');
   var saveBtn = document.getElementById('save-btn');
   var exitBtn = document.getElementById('exit-edit-btn');
+  var inactivityTimer = null;
+  var INACTIVITY_LIMIT = 60000;
+
+  function resetInactivityTimer() {
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    if (!isAuthenticated) return;
+    inactivityTimer = setTimeout(function () {
+      exitEditMode();
+    }, INACTIVITY_LIMIT);
+  }
+
+  function startInactivityWatch() {
+    resetInactivityTimer();
+    var events = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'click', 'wheel'];
+    events.forEach(function (ev) {
+      document.addEventListener(ev, resetInactivityTimer);
+    });
+  }
+
+  function stopInactivityWatch() {
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    inactivityTimer = null;
+  }
 
   function enterEditMode() {
+    isAuthenticated = true;
     document.body.contentEditable = 'true';
     if (saveBar) saveBar.hidden = false;
     loadContentOverrides();
+    startInactivityWatch();
   }
 
   function exitEditMode() {
     document.body.contentEditable = 'false';
     if (saveBar) saveBar.hidden = true;
     isAuthenticated = false;
+    stopInactivityWatch();
   }
 
   function loadContentOverrides() {

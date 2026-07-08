@@ -249,9 +249,7 @@
 
       var grid = document.getElementById('cards-grid');
       var addBtn = document.getElementById('btn-add-card');
-      var controls = document.getElementById('careers-controls');
 
-      // Check admin status
       if (sb) {
         sb.auth.getSession().then(function (res) {
           if (res.data && res.data.session) {
@@ -262,24 +260,28 @@
       }
 
       function loadCards() {
-        try {
-          var saved = localStorage.getItem('sc_careers');
-          if (saved) {
-            cardsData = JSON.parse(saved);
-          } else {
-            cardsData = [];
-          }
-        } catch (e) {
-          cardsData = [];
+        if (!sb) {
+          renderCards();
+          return;
         }
-        renderCards();
-        saveCards();
+        sb.from('careers').select('*').order('sort_order', { ascending: true }).then(function (res) {
+          if (res.error) { console.error(res.error); cardsData = []; }
+          else { cardsData = res.data || []; }
+          renderCards();
+        });
       }
 
       function saveCards() {
-        try {
-          localStorage.setItem('sc_careers', JSON.stringify(cardsData));
-        } catch (e) {}
+        if (!sb || !isAdmin) return;
+        sb.from('careers').delete().gte('id', 0).then(function () {
+          if (cardsData.length === 0) return;
+          var rows = cardsData.map(function (card, idx) {
+            return { title: card.title, body: card.body, sort_order: idx };
+          });
+          sb.from('careers').insert(rows).then(function (res) {
+            if (res.error) console.error(res.error);
+          });
+        });
       }
 
       function renderCards() {
@@ -297,8 +299,8 @@
         var html = '';
         cardsData.forEach(function (card, idx) {
           html +=
-            '<div class="job-card" data-index="' + idx + '">' +
-              '<button class="btn-remove-card' + (isAdmin ? ' visible' : '') + '" data-index="' + idx + '" title="Remove position" aria-label="Remove job position">&times;</button>' +
+            '<div class="job-card">' +
+              (isAdmin ? '<button class="btn-remove-card visible" data-index="' + idx + '" title="Remove position" aria-label="Remove job position">&times;</button>' : '') +
               '<h3 class="job-card-title">' + escapeHtml(card.title) + '</h3>' +
               '<div class="job-card-body' + (card.expanded ? ' expanded' : '') + '">' + escapeHtml(card.body) + '</div>' +
               '<button class="btn-expand" data-index="' + idx + '">' + (card.expanded ? 'Show less' : 'Read more') + '</button>' +
@@ -307,24 +309,20 @@
         });
         grid.innerHTML = html;
 
-        // Attach expand listeners
         grid.querySelectorAll('.btn-expand').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var idx = parseInt(this.getAttribute('data-index'));
             cardsData[idx].expanded = !cardsData[idx].expanded;
-            saveCards();
             renderCards();
           });
         });
 
-        // Attach remove listeners
         if (isAdmin) {
           grid.querySelectorAll('.btn-remove-card').forEach(function (btn) {
             btn.addEventListener('click', function () {
               var idx = parseInt(this.getAttribute('data-index'));
               cardsData.splice(idx, 1);
-              saveCards();
-              renderCards();
+              saveCards().then(function () { loadCards(); });
             });
           });
         }
@@ -336,7 +334,6 @@
         return div.innerHTML;
       }
 
-      // Add card
       addBtn.addEventListener('click', function () {
         var title = prompt('Job title:');
         if (!title || !title.trim()) return;
@@ -347,8 +344,7 @@
           body: body.trim(),
           expanded: false
         });
-        saveCards();
-        renderCards();
+        saveCards().then(function () { loadCards(); });
       });
 
       loadCards();
