@@ -68,13 +68,6 @@
   var modal = document.getElementById('auth-modal');
   var isAuthenticated = false;
 
-  checkAuthStatus().then(function (res) {
-    if (res.data && res.data.session) {
-      isAuthenticated = true;
-      enterEditMode();
-    }
-  });
-
   if (trigger) {
     trigger.addEventListener('click', function (e) {
       e.stopPropagation();
@@ -85,7 +78,14 @@
       if (clickCount >= 5) {
         clearTimeout(clickTimer);
         clickCount = 0;
-        showModal();
+        checkAuthStatus().then(function (res) {
+          if (res.data && res.data.session) {
+            isAuthenticated = true;
+            enterEditMode();
+          } else {
+            showModal();
+          }
+        });
       }
     });
   }
@@ -155,15 +155,13 @@
   var exitBtn = document.getElementById('exit-edit-btn');
 
   function enterEditMode() {
-    var els = document.querySelectorAll('[data-editable]');
-    els.forEach(function (el) { el.contentEditable = 'true'; });
+    document.body.contentEditable = 'true';
     if (saveBar) saveBar.hidden = false;
     loadContentOverrides();
   }
 
   function exitEditMode() {
-    var els = document.querySelectorAll('[data-editable]');
-    els.forEach(function (el) { el.contentEditable = 'false'; });
+    document.body.contentEditable = 'false';
     if (saveBar) saveBar.hidden = true;
     isAuthenticated = false;
   }

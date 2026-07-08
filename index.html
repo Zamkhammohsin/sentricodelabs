@@ -86,8 +86,8 @@
   <!-- Header -->
   <header class="header" role="banner">
     <div class="header-inner">
-      <a href="/" class="logo" aria-label="Sentricodelabs Home">Sentricode<span>labs</span></a>
-      <nav class="nav" role="navigation" aria-label="Main navigation">
+      <a href="/" class="logo" aria-label="Sentricodelabs Home" data-editable="header-logo">Sentricode<span>labs</span></a>
+      <nav class="nav" role="navigation" aria-label="Main navigation" data-editable="header-nav">
         <a href="#about">About</a>
         <a href="#services">Services</a>
         <a href="#contact">Contact</a>
@@ -110,8 +110,8 @@
       <h1 data-editable="hero-heading">Custom Software That Scales With You</h1>
       <p data-editable="hero-desc">We build purposeful software for modern teams—from web and mobile apps to full-scale enterprise platforms. Expert development, transparent process, delivered on time.</p>
       <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary">Start a Project</a>
-        <a href="#services" class="btn btn-secondary">See What We Build</a>
+        <a href="#contact" class="btn btn-primary" data-editable="hero-btn-1">Start a Project</a>
+        <a href="#services" class="btn btn-secondary" data-editable="hero-btn-2">See What We Build</a>
       </div>
     </div>
   </section>
@@ -179,7 +179,7 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-text reveal">
-          <span class="section-label">About Us</span>
+          <span class="section-label" data-editable="about-label">About Us</span>
           <h2 id="about-heading" data-editable="about-heading">Building software that actually works—for real people</h2>
           <p data-editable="about-p1">Sentricodelabs is a small, focused team of engineers and designers who believe software should be simple, reliable, and a pleasure to use. We don't do bureaucracy. We do shipping.</p>
           <p data-editable="about-p2">Every project starts with understanding your goals, your users, and your constraints. Then we design and build solutions that fit—not the other way around. Whether you need a customer-facing web app, an internal tool, or a complete platform overhaul, we bring the same care and attention to detail.</p>
@@ -371,19 +371,19 @@
       <div class="stats-grid">
         <div class="reveal">
           <div class="stat-number" data-editable="stat-1">25+</div>
-          <div class="stat-label">Clients Served</div>
+          <div class="stat-label" data-editable="stat-label-1">Clients Served</div>
         </div>
         <div class="reveal reveal-delay-1">
           <div class="stat-number" data-editable="stat-2">10+</div>
-          <div class="stat-label">Projects Completed</div>
+          <div class="stat-label" data-editable="stat-label-2">Projects Completed</div>
         </div>
         <div class="reveal reveal-delay-2">
           <div class="stat-number" data-editable="stat-3">1+</div>
-          <div class="stat-label">Years in Business</div>
+          <div class="stat-label" data-editable="stat-label-3">Years in Business</div>
         </div>
         <div class="reveal reveal-delay-3">
           <div class="stat-number" data-editable="stat-4">3+</div>
-          <div class="stat-label">Team Members</div>
+          <div class="stat-label" data-editable="stat-label-4">Team Members</div>
         </div>
       </div>
     </div>
@@ -469,9 +469,9 @@
 
           <!-- Step 1: Project Type -->
           <div class="form-step active" data-step="0" role="group" aria-labelledby="step1-label">
-            <h3 id="step1-label">What best describes your project?</h3>
-            <p class="step-desc">Select the option that fits closest.</p>
-            <div class="form-options grid-2">
+            <h3 id="step1-label" data-editable="form-step1-title">What best describes your project?</h3>
+            <p class="step-desc" data-editable="form-step1-desc">Select the option that fits closest.</p>
+            <div class="form-options grid-2" data-editable="form-step1-options">
               <div class="option-card" data-value="Web Application" tabindex="0" role="button">Web Application</div>
               <div class="option-card" data-value="Mobile App" tabindex="0" role="button">Mobile App</div>
               <div class="option-card" data-value="Desktop Application" tabindex="0" role="button">Desktop Application</div>
@@ -483,31 +483,31 @@
             </div>
             <div class="form-nav">
               <span></span>
-              <button type="button" class="btn btn-primary btn-next">Next Step</button>
+              <button type="button" class="btn btn-primary btn-next" data-editable="form-btn-next">Next Step</button>
             </div>
           </div>
 
           <!-- Step 2: Timeline -->
           <div class="form-step" data-step="1" role="group" aria-labelledby="step2-label">
-            <h3 id="step2-label">What's your timeline?</h3>
-            <p class="step-desc">No pressure—this helps us plan.</p>
-            <div class="form-options grid-2">
+            <h3 id="step2-label" data-editable="form-step2-title">What's your timeline?</h3>
+            <p class="step-desc" data-editable="form-step2-desc">No pressure—this helps us plan.</p>
+            <div class="form-options grid-2" data-editable="form-step2-options">
               <div class="option-card" data-value="ASAP" tabindex="0" role="button">ASAP</div>
               <div class="option-card" data-value="1-3 months" tabindex="0" role="button">1-3 Months</div>
               <div class="option-card" data-value="3-6 months" tabindex="0" role="button">3-6 Months</div>
               <div class="option-card" data-value="Not sure yet" tabindex="0" role="button">Not Sure Yet</div>
             </div>
             <div class="form-nav">
-              <button type="button" class="btn btn-back">Back</button>
-              <button type="button" class="btn btn-primary btn-next">Next Step</button>
+              <button type="button" class="btn btn-back" data-editable="form-btn-back-1">Back</button>
+              <button type="button" class="btn btn-primary btn-next" data-editable="form-btn-next-1">Next Step</button>
             </div>
           </div>
 
           <!-- Step 3: Contact Info -->
           <div class="form-step" data-step="2" role="group" aria-labelledby="step3-label">
-            <h3 id="step3-label">How should we reach you?</h3>
-            <p class="step-desc">Choose your preferred contact method.</p>
-            <div class="toggle-group" role="radiogroup" aria-label="Contact method">
+            <h3 id="step3-label" data-editable="form-step3-title">How should we reach you?</h3>
+            <p class="step-desc" data-editable="form-step3-desc">Choose your preferred contact method.</p>
+            <div class="toggle-group" role="radiogroup" aria-label="Contact method" data-editable="form-step3-toggle">
               <div class="toggle-option active" data-value="phone" role="radio" aria-checked="true" tabindex="0">Phone</div>
               <div class="toggle-option" data-value="email" role="radio" aria-checked="false" tabindex="0">Email</div>
             </div>
@@ -522,19 +522,19 @@
             <input type="hidden" name="projectType" value="">
             <input type="hidden" name="timeline" value="">
             <div class="form-nav">
-              <button type="button" class="btn btn-back">Back</button>
-              <button type="button" class="btn btn-primary btn-next">Next Step</button>
+              <button type="button" class="btn btn-back" data-editable="form-btn-back-2">Back</button>
+              <button type="button" class="btn btn-primary btn-next" data-editable="form-btn-next-2">Next Step</button>
             </div>
           </div>
 
           <!-- Step 4: Name -->
           <div class="form-step" data-step="3" role="group" aria-labelledby="step4-label">
-            <h3 id="step4-label">One last thing—your name?</h3>
-            <p class="step-desc">We like to know who we're talking to.</p>
+            <h3 id="step4-label" data-editable="form-step4-title">One last thing—your name?</h3>
+            <p class="step-desc" data-editable="form-step4-desc">We like to know who we're talking to.</p>
             <input type="text" class="form-input" name="name" placeholder="Your name" autocomplete="name" required>
             <div class="form-nav">
-              <button type="button" class="btn btn-back">Back</button>
-              <button type="submit" class="btn btn-primary">Send</button>
+              <button type="button" class="btn btn-back" data-editable="form-btn-back-3">Back</button>
+              <button type="submit" class="btn btn-primary" data-editable="form-btn-send">Send</button>
             </div>
           </div>
 
@@ -545,8 +545,8 @@
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
               </svg>
             </div>
-            <h3>Thanks for reaching out to us!</h3>
-            <p>Our team will contact you in under 24 hours.</p>
+            <h3 data-editable="confirm-title">Thanks for reaching out to us!</h3>
+            <p data-editable="confirm-desc">Our team will contact you in under 24 hours.</p>
           </div>
         </form>
       </div>
@@ -558,18 +558,18 @@
     <div class="container">
       <div class="footer-inner">
         <div>
-          <div class="footer-logo">Sentricode<span>labs</span></div>
+          <div class="footer-logo" data-editable="footer-logo">Sentricode<span>labs</span></div>
           <img src="images/sentricode%20logo.png" alt="" class="footer-logo-img" aria-hidden="true">
-          <p>&copy; 2026 Sentricodelabs. All rights reserved. <span class="auth-trigger" aria-hidden="true">🤖</span></p>
+          <p data-editable="footer-copyright">&copy; 2026 Sentricodelabs. All rights reserved. <span class="auth-trigger" aria-hidden="true">🤖</span></p>
         </div>
-        <div class="footer-links">
+        <div class="footer-links" data-editable="footer-links">
           <a href="#about">About</a>
           <a href="#services">Services</a>
           <a href="#contact">Contact</a>
           <a href="privacy.html">Privacy</a>
           <a href="policy.html">Policy</a>
         </div>
-        <div class="footer-careers">
+        <div class="footer-careers" data-editable="footer-careers">
           <h4>Careers</h4>
           <p>We're always looking for talented people to join our team. Email us at <a href="mailto:info@sentricodelabs.com">info@sentricodelabs.com</a> with your resume to explore open positions.</p>
         </div>
