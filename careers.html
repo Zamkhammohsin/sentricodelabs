@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers - Sentricodelabs</title>
+  <meta name="description" content="Join the Sentricodelabs team. View open positions and send us your resume.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/sentricode%20logo.png">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    .careers-page {
+      background: var(--bg-secondary);
+      min-height: 60vh;
+    }
+    .careers-header {
+      text-align: center;
+      padding: 60px 0 40px;
+    }
+    .careers-header h1 {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 8px;
+    }
+    .careers-header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      margin: 0;
+    }
+    .careers-controls {
+      text-align: right;
+      margin-bottom: 24px;
+      min-height: 48px;
+    }
+    .btn-add-card {
+      background: var(--accent-1);
+      color: var(--white);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .btn-add-card:hover { background: #c49666; }
+    .btn-add-card.hidden { display: none; }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      padding-bottom: 80px;
+    }
+    .job-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      position: relative;
+      transition: var(--transition);
+    }
+    .job-card:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: transparent;
+    }
+    .job-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 4px;
+      padding-right: 28px;
+    }
+    .job-card-body {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin: 12px 0 0;
+      max-height: 4.95em;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .job-card-body.expanded {
+      max-height: none;
+    }
+    .job-card-email {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin: 16px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .job-card-email a {
+      color: var(--accent-1);
+      text-decoration: underline;
+    }
+    .btn-expand {
+      background: none;
+      border: none;
+      color: var(--accent-1);
+      font-size: 0.88rem;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 6px;
+    }
+    .btn-expand:hover { text-decoration: underline; }
+    .btn-remove-card {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-secondary);
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .btn-remove-card:hover {
+      border-color: #b91c1c;
+      color: #b91c1c;
+    }
+    .btn-remove-card.visible { display: flex; }
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-secondary);
+      grid-column: 1 / -1;
+    }
+    .empty-state .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+    .empty-state h3 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 0 0 6px;
+    }
+    .empty-state p {
+      font-size: 0.95rem;
+      margin: 0 0 4px;
+    }
+    .empty-state .empty-email a {
+      color: var(--accent-1);
+      text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+      .careers-header { padding: 40px 0 28px; }
+      .careers-header h1 { font-size: 1.5rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="Sentricodelabs Home">Sentricode<span>labs</span></a>
+      <nav class="nav" role="navigation" aria-label="Main navigation">
+        <a href="/#about">About</a>
+        <a href="/#services">Services</a>
+        <a href="/#contact">Contact</a>
+        <a href="careers.html" class="active">Careers</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="policy.html">Policy</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Careers -->
+  <section class="careers-page">
+    <div class="container">
+      <div class="careers-header">
+        <span class="section-label">Join Us</span>
+        <h1>Work with us</h1>
+        <p>We're always looking for talented people to join our team.</p>
+      </div>
+
+      <div id="careers-controls" class="careers-controls">
+        <button id="btn-add-card" class="btn-add-card hidden" title="Add position" aria-label="Add job position">+</button>
+      </div>
+
+      <div id="cards-grid" class="cards-grid">
+        <!-- Cards rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Sentricode<span>labs</span></div>
+          <img src="images/sentricode%20logo.png" alt="" class="footer-logo-img" aria-hidden="true">
+          <p>&copy; 2026 Sentricodelabs. All rights reserved.</p>
+        </div>
+        <div class="footer-links">
+          <a href="/#about">About</a>
+          <a href="/#services">Services</a>
+          <a href="/#contact">Contact</a>
+          <a href="careers.html">Careers</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="policy.html">Policy</a>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/company/sentricode-labs" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://x.com/sentricodelabs" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var SUPABASE_URL = 'https://gczbyxdchknsfepewfub.supabase.co';
+      var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjemJ5eGRjaGtuc2ZlcGV3ZnViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNDgzNTgsImV4cCI6MjA5ODgyNDM1OH0.k-0olIoNwjuqMRkUdEAeu5MURvylLWzHSKmriFqpN94';
+
+      var sb = null;
+      if (typeof supabase !== 'undefined' && supabase.createClient) {
+        sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+
+      var isAdmin = false;
+      var cardsData = [];
+
+      var grid = document.getElementById('cards-grid');
+      var addBtn = document.getElementById('btn-add-card');
+      var controls = document.getElementById('careers-controls');
+
+      // Check admin status
+      if (sb) {
+        sb.auth.getSession().then(function (res) {
+          if (res.data && res.data.session) {
+            isAdmin = true;
+            addBtn.classList.remove('hidden');
+          }
+        });
+      }
+
+      function loadCards() {
+        try {
+          var saved = localStorage.getItem('sc_careers');
+          if (saved) {
+            cardsData = JSON.parse(saved);
+          } else {
+            cardsData = [];
+          }
+        } catch (e) {
+          cardsData = [];
+        }
+        renderCards();
+        saveCards();
+      }
+
+      function saveCards() {
+        try {
+          localStorage.setItem('sc_careers', JSON.stringify(cardsData));
+        } catch (e) {}
+      }
+
+      function renderCards() {
+        if (cardsData.length === 0) {
+          grid.innerHTML =
+            '<div class="empty-state">' +
+              '<div class="empty-icon">\uD83D\uDE0A</div>' +
+              '<h3>No open positions right now</h3>' +
+              '<p>We don\'t have any job openings at the moment,</p>' +
+              '<p>but we\'re always happy to hear from talented people.</p>' +
+              '<p class="empty-email">Drop us a line at <a href="mailto:careers@sentricodelabs.com">careers@sentricodelabs.com</a></p>' +
+            '</div>';
+          return;
+        }
+
+        var html = '';
+        cardsData.forEach(function (card, idx) {
+          html +=
+            '<div class="job-card" data-index="' + idx + '">' +
+              '<button class="btn-remove-card' + (isAdmin ? ' visible' : '') + '" data-index="' + idx + '" title="Remove position" aria-label="Remove job position">&times;</button>' +
+              '<h3 class="job-card-title">' + escapeHtml(card.title) + '</h3>' +
+              '<div class="job-card-body' + (card.expanded ? ' expanded' : '') + '">' + escapeHtml(card.body) + '</div>' +
+              '<button class="btn-expand" data-index="' + idx + '">' + (card.expanded ? 'Show less' : 'Read more') + '</button>' +
+              '<p class="job-card-email">Send your resume to <a href="mailto:careers@sentricodelabs.com?subject=' + encodeURIComponent(card.title) + '">careers@sentricodelabs.com</a> with <strong>' + escapeHtml(card.title) + '</strong> as the subject.</p>' +
+            '</div>';
+        });
+        grid.innerHTML = html;
+
+        // Attach expand listeners
+        grid.querySelectorAll('.btn-expand').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var idx = parseInt(this.getAttribute('data-index'));
+            cardsData[idx].expanded = !cardsData[idx].expanded;
+            saveCards();
+            renderCards();
+          });
+        });
+
+        // Attach remove listeners
+        if (isAdmin) {
+          grid.querySelectorAll('.btn-remove-card').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              var idx = parseInt(this.getAttribute('data-index'));
+              cardsData.splice(idx, 1);
+              saveCards();
+              renderCards();
+            });
+          });
+        }
+      }
+
+      function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      // Add card
+      addBtn.addEventListener('click', function () {
+        var title = prompt('Job title:');
+        if (!title || !title.trim()) return;
+        var body = prompt('Job description:');
+        if (!body || !body.trim()) return;
+        cardsData.push({
+          title: title.trim(),
+          body: body.trim(),
+          expanded: false
+        });
+        saveCards();
+        renderCards();
+      });
+
+      loadCards();
+    })();
+  </script>
+</body>
+</html>
