@@ -1,11 +1,29 @@
-User-agent: *
-Disallow: /
+# ==============================================================================
+# ROBOTS.TXT FOR SENTRICODELABS.COM
+# ==============================================================================
+# Global Policy: Full access is granted for standard search indexing, 
+# real-time AI retrieval, and AI model training, provided that all data 
+# utilization strictly complies with ethical and legal frameworks.
+# ==============================================================================
 
-# Sentricodelabs – All rights reserved.
-# Automated scraping, crawling, data extraction, or any unauthorized
-# reproduction of content from this site is strictly prohibited.
-# 
-# If you wish to request access to our content, contact:
-# info@sentricodelabs.com
+User-agent: *
+Allow: /
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+
+# ==============================================================================
+# TERMS OF SERVICE & ETHICAL USE STIPULATION
+# ==============================================================================
+# By crawling, scraping, indexing, or ingesting any content, text, code, or data 
+# from this website, you explicitly agree to the following conditions:
 #
-# Unauthorized scraping will be subject to legal action.
+# 1. LEGAL COMPLIANCE: Content may NOT be used for any illegal purposes, 
+#    including but not limited to cyber warfare, malware development, fraud, 
+#    phishing, or violating data privacy regulations.
+#
+# 2. ETHICAL LIMITATIONS: Content may NOT be used to train AI models designed 
+#    for mass surveillance, automated weapon systems, systemic bias/discrimination, 
+#    deceptive deepfakes, or the generation of hate speech.
+#
+# Sentricodelabs – All rights reserved.
+# For authorization inquiries or partnerships, contact: info@sentricodelabs.com
+# ==============================================================================
