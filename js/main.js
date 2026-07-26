@@ -18,23 +18,35 @@
   /* ─── Mobile nav ─── */
   const toggleBtn = document.querySelector('.nav-toggle');
   const nav = document.querySelector('.nav');
+  const arrowRight = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+  const arrowLeft = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
 
   if (toggleBtn && nav) {
-    toggleBtn.addEventListener('click', function () {
-      nav.classList.toggle('open');
-      const isOpen = nav.classList.contains('open');
-      toggleBtn.setAttribute('aria-expanded', isOpen);
-      toggleBtn.innerHTML = isOpen
-        ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-        : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    toggleBtn.innerHTML = arrowLeft;
+
+    function closeNav() {
+      nav.classList.add('collapsed');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.innerHTML = arrowRight;
+      toggleBtn.classList.add('nav-closed');
+    }
+    function openNav() {
+      nav.classList.remove('collapsed');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      toggleBtn.innerHTML = arrowLeft;
+      toggleBtn.classList.remove('nav-closed');
+    }
+
+    toggleBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (nav.classList.contains('collapsed')) { openNav(); }
+      else { closeNav(); }
     });
 
-    document.querySelectorAll('.nav a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        nav.classList.remove('open');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-        toggleBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
-      });
+    document.addEventListener('click', function (e) {
+      if (!nav.classList.contains('collapsed') && !nav.contains(e.target) && e.target !== toggleBtn) {
+        closeNav();
+      }
     });
   }
 
@@ -378,5 +390,128 @@
 
     showStep(0);
   }
+
+  /* ─── Social Carousel ─── */
+  (function initCarousel() {
+    var track = document.getElementById('social-carousel');
+    if (!track) return;
+
+    var scene = track.closest('.carousel-scene');
+    var cards = Array.from(track.querySelectorAll('.carousel-card'));
+    var total = cards.length;
+    if (total === 0) return;
+
+    var theta = 360 / total;
+    var radius = 280;
+    var targetAngle = 0;
+
+    function setRadius() {
+      var w = scene.offsetWidth;
+      if (w < 500) radius = 180;
+      else if (w < 800) radius = 230;
+      else radius = 280;
+    }
+
+    function layoutCards() {
+      setRadius();
+      cards.forEach(function (card, i) {
+        var angle = theta * i;
+        var diff = ((angle - targetAngle) % 360 + 540) % 360 - 180;
+        var absDiff = Math.abs(diff);
+        var normalize = Math.min(absDiff / 180, 1);
+
+        var scale = 1 - normalize * 0.3;
+        var opacity = 1 - normalize * 0.6;
+
+        card.style.transform =
+          'rotateY(' + diff + 'deg) translateZ(' + radius + 'px) scale(' + scale + ')';
+        card.style.opacity = opacity;
+        card.style.zIndex = Math.round((1 - normalize) * 100);
+
+        if (absDiff < theta / 2 || absDiff > 360 - theta / 2) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+    }
+
+    function snapToNearest() {
+      var steps = Math.round(targetAngle / theta);
+      targetAngle = steps * theta;
+      layoutCards();
+    }
+
+    layoutCards();
+
+    var dragging = false;
+    var startX = 0;
+    var dragAngle = 0;
+    var hasMoved = false;
+
+    function onPointerDown(e) {
+      dragging = true;
+      hasMoved = false;
+      startX = e.clientX !== undefined ? e.clientX : (e.touches ? e.touches[0].clientX : 0);
+      dragAngle = targetAngle;
+      cards.forEach(function (c) { c.style.transition = 'none'; });
+    }
+
+    function onPointerMove(e) {
+      if (!dragging) return;
+      var x = e.clientX !== undefined ? e.clientX : (e.touches ? e.touches[0].clientX : 0);
+      var dx = x - startX;
+      if (Math.abs(dx) > 3) hasMoved = true;
+      targetAngle = dragAngle + dx * 0.4;
+      layoutCards();
+    }
+
+    function onPointerUp() {
+      if (!dragging) return;
+      dragging = false;
+      cards.forEach(function (c) { c.style.transition = ''; });
+      snapToNearest();
+    }
+
+    scene.addEventListener('mousedown', onPointerDown);
+    scene.addEventListener('touchstart', onPointerDown, { passive: true });
+    document.addEventListener('mousemove', onPointerMove);
+    document.addEventListener('touchmove', onPointerMove, { passive: true });
+    document.addEventListener('mouseup', onPointerUp);
+    document.addEventListener('touchend', onPointerUp);
+
+    cards.forEach(function (card, i) {
+      card.addEventListener('click', function (e) {
+        if (hasMoved) return;
+        e.stopPropagation();
+        if (card.classList.contains('active')) {
+          var url = card.getAttribute('data-url');
+          if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          return;
+        }
+        var diff = ((theta * i - targetAngle) % 360 + 540) % 360 - 180;
+        targetAngle += diff;
+        cards.forEach(function (c) { c.style.transition = ''; });
+        layoutCards();
+      });
+    });
+
+    function rotateCarousel(dir) {
+      targetAngle += dir * theta;
+      cards.forEach(function (c) { c.style.transition = ''; });
+      snapToNearest();
+    }
+
+    var prevBtn = document.getElementById('carousel-prev');
+    var nextBtn = document.getElementById('carousel-next');
+    if (prevBtn) prevBtn.addEventListener('click', function () { rotateCarousel(1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { rotateCarousel(-1); });
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { layoutCards(); }, 150);
+    });
+  })();
 
 })();

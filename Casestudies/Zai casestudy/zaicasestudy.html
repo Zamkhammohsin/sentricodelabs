@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scaling a Global Logistics Interface | Sentricodelabs</title>
+    <style>
+        /* PDF Compatibility & WeasyPrint @page rules */
+        @page {
+            size: A4;
+            margin: 20mm 15mm;
+            @bottom-left {
+                content: "sentricodelabs.com | Case Study";
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 8pt;
+                color: #7a7571;
+            }
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 8pt;
+                color: #7a7571;
+            }
+        }
+
+        /* Root & Global Reset */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #2d2d2d;
+            background-color: #fcfbf9;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Georgia', serif;
+            font-weight: normal;
+            color: #1e1e1e;
+            margin-top: 0;
+        }
+        p {
+            margin: 0 0 12px 0;
+            color: #2d2d2d;
+        }
+
+        /* Avoid breaks mid-section */
+        h1, h2, h3, h4 {
+            page-break-after: avoid;
+        }
+        .no-break {
+            page-break-inside: avoid;
+        }
+
+        /* Full-width Header styling utilizing margin breakouts */
+        .header-banner {
+            background-color: #1e1e1e;
+            color: #fcfbf9;
+            padding: 30px 40px;
+            margin-left: -15mm;
+            margin-right: -15mm;
+            margin-top: -20mm;
+            margin-bottom: 25px;
+            border-bottom: 4px solid #e0a97a;
+        }
+        .brand-logo {
+            font-family: 'Georgia', serif;
+            font-size: 16pt;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            color: #fcfbf9;
+        }
+        .header-title {
+            font-size: 24pt;
+            line-height: 1.2;
+            margin: 5px 0 10px 0;
+            color: #fcfbf9;
+        }
+        .header-subtitle {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 11pt;
+            font-weight: 300;
+            color: #e8e5e0;
+            margin: 0;
+            max-width: 90%;
+        }
+
+        /* Metrics Bar Table */
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: #f7f5f2;
+            border: 1px solid #e8e5e0;
+            border-radius: 6px;
+        }
+        .metrics-table td {
+            width: 33.33%;
+            text-align: center;
+            padding: 15px 10px;
+            border-right: 1px solid #e8e5e0;
+        }
+        .metrics-table td:last-child {
+            border-right: none;
+        }
+        .metric-value {
+            font-family: 'Georgia', serif;
+            font-size: 22pt;
+            font-weight: bold;
+            color: #e0a97a;
+            margin-bottom: 2px;
+        }
+        .metric-label {
+            font-size: 8.5pt;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7a7571;
+        }
+
+        /* Content Structure: Two-Column Table Layout */
+        .content-layout {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+            margin-bottom: 30px;
+        }
+        .content-layout td {
+            vertical-align: top;
+            padding: 0;
+        }
+        .left-column {
+            width: 62%;
+            padding-right: 25px;
+        }
+        .right-column {
+            width: 38%;
+        }
+
+        /* Left Column Specific Styles */
+        .section-heading {
+            font-size: 14pt;
+            color: #1e1e1e;
+            border-bottom: 1px solid #e8e5e0;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        .highlight-box {
+            background-color: #f7f5f2;
+            border-left: 4px solid #e0a97a;
+            border-radius: 0 6px 6px 0;
+            padding: 12px 15px;
+            margin: 15px 0;
+        }
+        .highlight-box p {
+            margin: 0;
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #2d2d2d;
+        }
+
+        /* Images and Diagrams */
+        .project-image-container {
+            page-break-inside: avoid;
+            margin: 15px 0 5px 0;
+        }
+        .project-image {
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid #e8e5e0;
+            display: block;
+        }
+        .image-caption {
+            font-size: 8.5pt;
+            color: #7a7571;
+            font-style: italic;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* Right Column Sidebar Cards */
+        .sidebar-card {
+            background-color: #ffffff;
+            border: 1px solid #e8e5e0;
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+        .sidebar-title {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 10.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #1e1e1e;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #e0a97a;
+            padding-bottom: 4px;
+        }
+        .facts-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .facts-list li {
+            font-size: 9pt;
+            margin-bottom: 10px;
+            color: #2d2d2d;
+        }
+        .facts-list li strong {
+            color: #1e1e1e;
+            display: block;
+            margin-bottom: 1px;
+        }
+        .services-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .services-list li {
+            font-size: 9.5pt;
+            position: relative;
+            padding-left: 12px;
+            margin-bottom: 8px;
+            color: #2d2d2d;
+        }
+        .services-list li::before {
+            content: "•";
+            color: #e0a97a;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Bullet Points general styling */
+        .results-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        .results-list li {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 8px;
+        }
+        .results-list li::before {
+            content: "→";
+            color: #e0a97a;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Full-Width Section below Layout columns (like Results) */
+        .full-width-section {
+            margin-top: 15px;
+        }
+
+        /* Centered Footer CTA Block */
+        .footer-cta {
+            background-color: #1e1e1e;
+            color: #fcfbf9;
+            text-align: center;
+            padding: 25px 30px;
+            border-radius: 6px;
+            margin-top: 30px;
+            border-top: 3px solid #e0a97a;
+            page-break-inside: avoid;
+        }
+        .footer-cta h3 {
+            color: #fcfbf9;
+            font-size: 14pt;
+            margin-bottom: 8px;
+        }
+        .footer-cta p {
+            color: #e8e5e0;
+            font-size: 9.5pt;
+            margin-bottom: 15px;
+        }
+        .footer-btn {
+            display: inline-block;
+            background-color: #e0a97a;
+            color: #1e1e1e;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 9pt;
+            padding: 8px 18px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <div class="brand-logo">Sentricode<span style="color: #e0a97a;">labs</span></div>
+        <h1 class="header-title">Scaling a Global Logistics Interface</h1>
+        <div class="header-subtitle">How serverless database architecture eliminated order sync lag and restored supply chain trust.</div>
+    </div>
+
+    <!-- Metrics Bar -->
+    <table class="metrics-table">
+        <tr>
+            <td>
+                <div class="metric-value">99.9%</div>
+                <div class="metric-label">Uptime Guarantee</div>
+            </td>
+            <td>
+                <div class="metric-value">&lt; 2.0s</div>
+                <div class="metric-label">Sync Latency</div>
+            </td>
+            <td>
+                <div class="metric-value">10,000+</div>
+                <div class="metric-label">Daily Shipments</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Main Content Grid -->
+    <table class="content-layout">
+        <tr>
+            <!-- Left Column: Narratives & Diagrams -->
+            <td class="left-column">
+                
+                <h2 class="section-heading">The Client & Industry Profile</h2>
+                <p>
+                    The client is a premier, global freight broker based in Rotterdam, handling high-volume, multi-modal logistics across massive international marine hubs and transport networks. Operating at the epicenter of European trade, they coordinate intricate schedules spanning shipping containers, dry van trucking fleets, and urgent air freight operations.
+                </p>
+
+                <h2 class="section-heading">The Business Challenge</h2>
+                <p>
+                    As shipping volumes scaled rapidly, the client's legacy tracking software began failing under pressure. Severe database locks occurred routinely during peak harbor scheduling windows. This led to order synchronization lag exceeding 12 minutes, forcing operators to execute manual check-ins via phone and email. 
+                </p>
+                <div class="highlight-box">
+                    <p>
+                        "Without real-time data sync, we were operating in a blind spot. Even a minor schedule drift at international harbors threatened key delivery windows across our entire continental logistics pipeline."
+                    </p>
+                </div>
+                <p>
+                    This friction severely damaged supply chain trust, compromised driver schedules, and introduced costly demurrage fees. The client urgently needed a robust, low-latency tracking system capable of real-time multi-modal logistics coordination.
+                </p>
+
+                <h2 class="section-heading">The Architectural Solution</h2>
+                <p>
+                    Sentricodelabs engineered a state-of-the-art serverless database architecture and API layer designed to process real-time events concurrently without execution bottlenecks.
+                </p>
+                
+                <p><strong>1. Distributed Edge API:</strong> We deployed high-performance globally distributed API endpoints capable of processing asynchronous updates under 100 milliseconds, minimizing origin server overhead.</p>
+                
+                <p><strong>2. Real-time GPS Tracking:</strong> Integrated high-frequency telematics to ingestion pipelines, providing smooth, constant coordinate updates across all fleet operations.</p>
+                
+                <p><strong>3. Visual Dashboard Interface:</strong> Formulated an elegant, real-time reactive management panel displaying instant harbor, rail, and road transfer updates.</p>
+
+                <!-- Embedded System UI Screenshot -->
+                <div class="project-image-container">
+                    <img src="images/dashboard-mockup.png" alt="Dispatch Dashboard Interface" class="project-image">
+                    <div class="image-caption">Figure 1: The custom Sentricodelabs real-time dispatch dashboard interface displaying active marine routes and terminal container status.</div>
+                </div>
+
+            </td>
+
+            <!-- Right Column: Sidebar -->
+            <td class="right-column">
+                
+                <!-- Quick Facts Card -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Project Quick Facts</div>
+                    <ul class="facts-list">
+                        <li>
+                            <strong>Industry</strong>
+                            Logistics, Supply Chain, and Freight Brokerage
+                        </li>
+                        <li>
+                            <strong>Global Reach</strong>
+                            Europe, Asia, and North America hubs
+                        </li>
+                        <li>
+                            <strong>Our Mandate</strong>
+                            Serverless Migrations, API Design, and Cloud Integration
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Key Services Card -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Key Services Covered</div>
+                    <ul class="services-list">
+                        <li>Cloud architecture scalability</li>
+                        <li>Distributed serverless database deployment</li>
+                        <li>Edge network performance optimization</li>
+                        <li>Custom workflow automated pipelines</li>
+                        <li>Reactive UI dashboard development</li>
+                    </ul>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- Bottom Full Width Section: Results -->
+    <div class="full-width-section no-break">
+        <h2 class="section-heading">The Tangible Business Results</h2>
+        <p>
+            By decommissioning the legacy database systems and implementing a cutting-edge serverless tracking infrastructure, Sentricodelabs completely transformed the operational efficiency of the client's global shipping network:
+        </p>
+        <ul class="results-list">
+            <li><strong>Near-Instantaneous Sync:</strong> Order sync latency was slashed from a crippling 12-minute delay down to an average of less than 1.8 seconds.</li>
+            <li><strong>Unparalleled Stability:</strong> Upgraded infrastructure yielded 99.9% application uptime, effectively eliminating harbor scheduling bottlenecks.</li>
+            <li><strong>Operational Cost Reductions:</strong> Eliminated manual check-ins completely, enabling coordinators to oversee 40% more concurrent shipments.</li>
+            <li><strong>Restored Partner Trust:</strong> Transparent, sub-second route updates restored freight visibility, preserving critical multi-modal transit windows.</li>
+        </ul>
+    </div>
+
+    <!-- Call to Action Footer -->
+    <div class="footer-cta">
+        <h3>Accelerate Your Enterprise Infrastructure</h3>
+        <p>Looking to eliminate lag, migrate legacy databases, or design modern edge interfaces? Partner with Sentricodelabs to craft highly optimized, robust digital systems today.</p>
+        <a href="https://sentricodelabs.com" class="footer-btn">Explore Our Solutions</a>
+    </div>
+
+</body>
+</html>
